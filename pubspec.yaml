@@ -1,0 +1,40 @@
+name: jetleaf_scheduling
+description: Task scheduling and timed execution module for the JetLeaf framework.
+version: 1.0.0
+
+homepage: https://jetleaf.hapnium.com
+repository: https://github.com/jetleaf/jetleaf_scheduling
+issue_tracker: https://github.com/jetleaf/jetleaf_scheduling/issues
+documentation: https://jetleaf.hapnium.com/docs/scheduling
+
+topics:
+  - scheduling
+  - tasks
+  - jetleaf
+  - async
+  - timers
+
+keywords:
+  - jetleaf
+  - scheduler
+  - jobs
+  - background
+  - timing
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  meta: ^1.17.0
+  jetleaf_lang:
+    path: ../jetleaf_lang
+  jetleaf_logging:
+    path: ../jetleaf_logging
+  jetleaf_pod:
+    path: ../jetleaf_pod
+  jetleaf_core:
+    path: ../jetleaf_core
+
+dev_dependencies:
+  test: ^1.25.0
+  lints: ^6.0.0
