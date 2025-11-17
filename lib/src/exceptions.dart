@@ -57,7 +57,7 @@ class InvalidCronExpressionException extends SchedulerException {
   final String expression;
 
   /// {@macro invalidCronExpressionException}
-  InvalidCronExpressionException(String message, this.expression) : super(message, cause: expression);
+  InvalidCronExpressionException(super.message, this.expression) : super(cause: expression);
 
   @override
   String toString() => 'InvalidCronExpressionException: $message\nExpression: $expression';

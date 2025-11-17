@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the getScheduledTasks method from the SchedulingTaskRegistrar class, for the Dart programming language.">
+  <title>getScheduledTasks method - SchedulingTaskRegistrar class - jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling.dart</a></li>
+    <li><a href="../../jetleaf_scheduling/SchedulingTaskRegistrar-class.html">SchedulingTaskRegistrar</a></li>
+    <li class="self-crumb">getScheduledTasks method</li>
+  </ol>
+  <div class="self-name">getScheduledTasks</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_scheduling&#47;SchedulingTaskRegistrar-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">getScheduledTasks</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.dart.dev/stable/3.9.2/dart-core/override-constant.html">override</a></li>
+    </ol>
+  </div>
+<span class="returntype"><a href="https://api.dart.dev/stable/3.9.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../jetleaf_scheduling/ScheduledTask-class.html">ScheduledTask</a></span>&gt;</span></span>
+<span class="name ">getScheduledTasks</span>(<wbr>)
+
+      <div class="features"><span class="feature">override</span></div>
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Returns a list of all scheduled tasks managed by this holder.</p>
+<p>The returned list should contain all currently scheduled tasks,
+including those that are executing, waiting, or canceled. The
+order of tasks in the list is implementation-defined but should
+be consistent across multiple calls.</p>
+<p>Implementations should consider:</p>
+<ul>
+<li>Returning an unmodifiable list to prevent external modification</li>
+<li>Providing a defensive copy if the internal collection is mutable</li>
+<li>Maintaining thread safety if the holder is accessed concurrently</li>
+<li>Handling cases where tasks are added or removed during the call</li>
+</ul>
+<p>@return A list of all managed scheduled tasks. Returns an empty
+list if no tasks are currently managed.</p>
+<p>Example:</p>
+<pre class="language-dart"><code class="language-dart">final taskHolder = getTaskHolder();
+final allTasks = taskHolder.getScheduledTasks();
+
+for (final task in allTasks) {
+  print('Task: ${task.toString()}');
+  print('  Executions: ${task.getExecutionCount()}');
+  print('  Next run: ${task.getNextExecutionTime()}');
+  print('  Is executing: ${task.getIsExecuting()}');
+}
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">@override
+List&lt;ScheduledTask&gt; getScheduledTasks() =&gt; List&lt;ScheduledTask&gt;.unmodifiable(_scheduledTasks);</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/SchedulingTaskRegistrar-class.html">SchedulingTaskRegistrar</a></li>
+    <li class="self-crumb">getScheduledTasks method</li>
+</ol>
+
+    <h5>SchedulingTaskRegistrar class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

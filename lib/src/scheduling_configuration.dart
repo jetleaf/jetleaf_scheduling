@@ -1,3 +1,17 @@
+// ---------------------------------------------------------------------------
+// 🍃 JetLeaf Framework - https://jetleaf.hapnium.com
+//
+// Copyright © 2025 Hapnium & JetLeaf Contributors. All rights reserved.
+//
+// This source file is part of the JetLeaf Framework and is protected
+// under copyright law. You may not copy, modify, or distribute this file
+// except in compliance with the JetLeaf license.
+//
+// For licensing terms, see the LICENSE file in the root of this project.
+// ---------------------------------------------------------------------------
+// 
+// 🔧 Powered by Hapnium — the Dart backend engine 🍃
+
 import 'package:jetleaf_pod/pod.dart';
 import 'package:jetleaf_core/annotation.dart';
 
@@ -157,11 +171,18 @@ import 'scheduling_annotation_pod_procesor.dart';
 /// - Monitor thread pool usage if you have many concurrent scheduled tasks
 /// 
 /// {@endtemplate}
-@Configuration()
+@Configuration(SchedulingConfiguration.SCHEDULING_CONFIGURATION_POD_NAME)
 @Role(DesignRole.INFRASTRUCTURE)
 final class SchedulingConfiguration {
   /// {@macro SchedulingConfiguration}
-  /// 
+  SchedulingConfiguration();
+
+  /// Pod name for the **SchedulingConfiguration**.
+  ///
+  /// Configures the Jetleaf scheduling subsystem, including scheduled
+  /// task executors and lifecycle management.
+  static const String SCHEDULING_CONFIGURATION_POD_NAME = "jetleaf.scheduling.schedulingConfiguration";
+  
   /// Creates the main scheduling annotation processor that detects and registers
   /// methods annotated with `@Scheduled` and `@Cron`.
   /// 

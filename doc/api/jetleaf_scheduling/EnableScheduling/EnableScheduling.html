@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the EnableScheduling.new constructor from Class EnableScheduling from the jetleaf_scheduling library, for the Dart programming language.">
+  <title>EnableScheduling.new constructor - EnableScheduling - jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling.dart</a></li>
+    <li><a href="../../jetleaf_scheduling/EnableScheduling-class.html">EnableScheduling</a></li>
+    <li class="self-crumb">EnableScheduling.new const constructor</li>
+  </ol>
+  <div class="self-name">EnableScheduling.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_scheduling&#47;EnableScheduling-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">EnableScheduling</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      const
+      <span class="name ">EnableScheduling</span>(<wbr>)
+    </section>
+    
+<section class="desc markdown">
+  <p>Enables scheduled task execution for the application.</p>
+<p>When this annotation is present on a configuration class, it activates
+the scheduling infrastructure, allowing methods annotated with <code>@Scheduled</code>
+and <code>@Cron</code> to be automatically detected and executed according to their
+configured triggers.</p>
+<p>This annotation imports the <code>SchedulingConfiguration</code> which sets up the
+necessary pods for task scheduling, including the task scheduler and
+annotation processors.</p>
+<h2 id="usage">Usage</h2>
+<p>Apply this annotation to your main application configuration class to
+enable scheduling capabilities throughout your application:</p>
+<pre class="language-dart"><code class="language-dart">@EnableScheduling
+@Configuration
+class AppConfig {
+  // Application configuration pods...
+}
+
+// Or on your main application class:
+@EnableScheduling
+class MyApplication {
+  void run() {
+    final context = AnnotationConfigApplicationContext();
+    context.register(MyApplication);
+    context.refresh();
+  }
+}
+</code></pre>
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+<li><strong>Infrastructure Setup</strong>: Registers <code>SchedulingConfiguration</code> which
+provides the necessary scheduling infrastructure pods</li>
+<li><strong>Annotation Processing</strong>: Enables detection of <code>@Scheduled</code> and <code>@Cron</code>
+annotations on methods during component scanning</li>
+<li><strong>Task Registration</strong>: Automatically registers detected scheduled methods
+with the task scheduler</li>
+<li><strong>Lifecycle Integration</strong>: Ensures scheduled tasks are properly started
+and stopped with the application context lifecycle</li>
+</ol>
+<h2 id="required-dependencies">Required Dependencies</h2>
+<p>To use scheduling, ensure your application has:</p>
+<ul>
+<li>A <code>TaskScheduler</code> pod available in the context (auto-configured or custom)</li>
+<li>The scheduling annotation processor on the classpath</li>
+<li>Proper thread pool configuration for your task workload</li>
+</ul>
+<h2 id="customization">Customization</h2>
+<p>You can customize scheduling behavior by providing your own configuration:</p>
+<pre class="language-dart"><code class="language-dart">@EnableScheduling
+@Configuration
+class CustomSchedulingConfig {
+  @Pod
+  TaskScheduler taskScheduler() {
+    return ThreadPoolTaskScheduler()
+      ..setPoolSize(10)
+      ..setThreadNamePrefix('scheduled-task-')
+      ..setWaitForTasksToCompleteOnShutdown(true);
+  }
+}
+</code></pre>
+<h2 id="integration-with-other-features">Integration with Other Features</h2>
+<p>Scheduling works well with other application features:</p>
+<pre class="language-dart"><code class="language-dart">@EnableScheduling
+@EnableCaching
+@Configuration
+class FullFeaturedConfig {
+  // Combines scheduling with async execution and caching
+}
+
+@Service
+class DataProcessingService {
+  @Scheduled(fixedRate: 30000)
+  Future&lt;void&gt; processData() async {
+    // This method runs asynchronously every 30 seconds
+  }
+}
+</code></pre>
+<h2 id="error-handling">Error Handling</h2>
+<p>Scheduled methods should handle their own exceptions. Uncaught exceptions
+will be logged but won't stop the scheduler. For critical tasks, consider
+implementing retry logic or circuit breakers.</p>
+<pre class="language-dart"><code class="language-dart">@Service
+class RobustScheduledService {
+  @Scheduled(cron: '0 * * * * *')
+  void scheduledTaskWithErrorHandling() {
+    try {
+      // Task logic that might throw exceptions
+    } catch (error, stackTrace) {
+      // Log error and continue - scheduler will run again next minute
+      logger.error('Scheduled task failed', error, stackTrace);
+    }
+  }
+}
+</code></pre>
+<h2 id="testing-considerations">Testing Considerations</h2>
+<p>When testing applications with scheduled tasks, you might want to disable
+scheduling in test profiles:</p>
+<pre class="language-dart"><code class="language-dart">@Configuration
+@Profile('test')
+class TestConfig {
+  // No @EnableScheduling - tasks won't run during tests
+}
+
+// Or conditionally enable based on test type
+@EnableScheduling
+@Conditional(ProductionCondition)
+class ProductionConfig {
+  // Scheduling only enabled in production
+}
+</code></pre>
+<h2 id="performance-implications">Performance Implications</h2>
+<ul>
+<li>Each scheduled method creates a separate scheduled task</li>
+<li>Consider the thread pool size based on your concurrent task requirements</li>
+<li>Use appropriate trigger types (cron vs fixed rate) based on your needs</li>
+<li>Monitor task execution times to identify performance bottlenecks</li>
+</ul>
+<h2 id="common-patterns">Common Patterns</h2>
+<pre class="language-dart"><code class="language-dart">// Multiple scheduling strategies in one application
+@EnableScheduling
+@Configuration
+class MultiSchedulerApp {
+  @Pod
+  @Primary
+  TaskScheduler defaultScheduler() =&gt; ThreadPoolTaskScheduler();
+  
+  @Pod
+  TaskScheduler backgroundScheduler() {
+    return ThreadPoolTaskScheduler()
+      ..setPoolSize(5)
+      ..setThreadNamePrefix('background-');
+  }
+}
+
+@Service
+class MultiScheduledService {
+  // Uses default scheduler
+  @Scheduled(fixedRate: 5000)
+  void frequentTask() {
+    // Runs every 5 seconds
+  }
+  
+  // Uses specific scheduler
+  @Scheduled(cron: '0 0 2 * * *', scheduler: 'backgroundScheduler')
+  void nightlyTask() {
+    // Runs daily at 2 AM on background scheduler
+  }
+}
+</code></pre>
+<p>Creates an instance of <a href="../../jetleaf_scheduling/EnableScheduling-class.html">EnableScheduling</a> annotation.</p>
+<p>This annotation activates the scheduling infrastructure when applied
+to a configuration class. It requires no parameters as it relies on
+auto-configuration and component scanning to set up scheduling.</p>
+<p>Example:</p>
+<pre class="language-dart"><code class="language-dart">@EnableScheduling
+class MyApplication {
+  // Application class with scheduling enabled
+}
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">const EnableScheduling();</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/EnableScheduling-class.html">EnableScheduling</a></li>
+    <li class="self-crumb">EnableScheduling.new const constructor</li>
+</ol>
+
+    <h5>EnableScheduling class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

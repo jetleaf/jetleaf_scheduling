@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="jetleaf_scheduling library API docs, for the Dart programming language.">
+  <title>jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_scheduling</a></li>
+    <li class="self-crumb">jetleaf_scheduling.dart</li>
+  </ol>
+  <div class="self-name">jetleaf_scheduling</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar=""
+    data-below-sidebar="jetleaf_scheduling&#47;jetleaf_scheduling-library-sidebar.html">
+  
+    <div>
+      
+
+      <h1>
+        <span class="kind-library">jetleaf_scheduling</span>
+        library 
+ 
+
+      </h1>
+    </div>
+
+    
+<section class="desc markdown">
+  <p>JetLeaf Scheduling Library - Comprehensive task scheduling and execution framework.</p>
+<p>This library provides a robust scheduling infrastructure for JetLeaf applications,
+enabling time-based task execution, cron expressions, periodic triggers, and
+concurrent task management. It integrates seamlessly with JetLeaf's core
+dependency injection and aspect-oriented programming capabilities.</p>
+<p>The scheduling library supports various scheduling patterns:</p>
+<ul>
+<li><strong>Fixed Rate</strong>: Execute at fixed intervals regardless of previous execution completion</li>
+<li><strong>Fixed Delay</strong>: Execute with fixed delay between completion and next start</li>
+<li><strong>Cron Expressions</strong>: Complex scheduling using Unix-style cron patterns</li>
+<li><strong>Periodic</strong>: Simple recurring execution with configurable initial delay</li>
+</ul>
+<h2 id="example-scheduled-task-configuration">Example: Scheduled Task Configuration</h2>
+<pre class="language-dart"><code class="language-dart">@Pod
+class ScheduledTasks {
+  @Scheduled(fixedRate: 5000) // Every 5 seconds
+  void performHealthCheck() {
+    // Health check logic
+    _healthService.checkSystemHealth();
+  }
+
+  @Scheduled(cron: '0 0 2 * * *') // Daily at 2 AM
+  void generateDailyReport() {
+    // Report generation logic
+    _reportService.generateDailyReport();
+  }
+
+  @Scheduled(fixedDelay: 10000, initialDelay: 5000) // 10s delay after 5s initial
+  void processQueue() {
+    // Queue processing logic
+    _queueService.processPendingItems();
+  }
+}
+</code></pre>
+<h2 id="example-custom-task-scheduler">Example: Custom Task Scheduler</h2>
+<pre class="language-dart"><code class="language-dart">@Pod
+class CustomSchedulingConfigurer implements SchedulingConfigurer {
+  @override
+  void configureTasks(ScheduledTaskRegistrar registrar) {
+    registrar.addFixedRateTask(
+      ScheduledTask(
+        name: 'CustomTask',
+        runnable: _customTask,
+        initialDelay: Duration(seconds: 10),
+        interval: Duration(minutes: 5)
+      )
+    );
+  }
+
+  Future&lt;void&gt; _customTask() async {
+    // Custom task implementation
+    await _customService.executeBusinessLogic();
+  }
+}
+</code></pre>
+</section>
+
+
+    <section class="summary offset-anchor" id="classes">
+      <h2>Classes</h2>
+      <dl>
+          <dt id="ConcurrentTaskScheduler">
+  <span class="name "><a href="../jetleaf_scheduling/ConcurrentTaskScheduler-class.html">ConcurrentTaskScheduler</a></span> 
+
+</dt>
+<dd>
+  A <a href="../jetleaf_scheduling/TaskScheduler-class.html">TaskScheduler</a> implementation that supports concurrent task execution
+with configurable concurrency limits and task queue management.
+</dd>
+
+          <dt id="Cron">
+  <span class="name "><a href="../jetleaf_scheduling/Cron-class.html">Cron</a></span> 
+
+</dt>
+<dd>
+  Defines a cron expression for scheduling the annotated method's execution.
+</dd>
+
+          <dt id="CronExpression">
+  <span class="name "><a href="../jetleaf_scheduling/CronExpression-class.html">CronExpression</a></span> 
+
+</dt>
+<dd>
+  A strongly typed and runtime-validated representation of a cron expression.
+</dd>
+
+          <dt id="CronField">
+  <span class="name "><a href="../jetleaf_scheduling/CronField-class.html">CronField</a></span> 
+
+</dt>
+<dd>
+  Represents a single field in a cron expression
+</dd>
+
+          <dt id="CronTrigger">
+  <span class="name "><a href="../jetleaf_scheduling/CronTrigger-class.html">CronTrigger</a></span> 
+
+</dt>
+<dd>
+  Trigger implementation for cron expression-based scheduling.
+</dd>
+
+          <dt id="DefaultSchedulingTaskNameGenerator">
+  <span class="name "><a href="../jetleaf_scheduling/DefaultSchedulingTaskNameGenerator-class.html">DefaultSchedulingTaskNameGenerator</a></span> 
+
+</dt>
+<dd>
+  Default implementation of <a href="../jetleaf_scheduling/SchedulingTaskNameGenerator-class.html">SchedulingTaskNameGenerator</a> that creates
+structured, hierarchical task names with environment-aware prefixes.
+</dd>
+
+          <dt id="DefaultTaskExecutionContext">
+  <span class="name "><a href="../jetleaf_scheduling/DefaultTaskExecutionContext-class.html">DefaultTaskExecutionContext</a></span> 
+
+</dt>
+<dd>
+  Default implementation of <a href="../jetleaf_scheduling/TaskExecutionContext-class.html">TaskExecutionContext</a> that provides comprehensive
+tracking of task execution history, timing metrics, and exception handling
+with full timezone awareness.
+</dd>
+
+          <dt id="EnableScheduling">
+  <span class="name "><a href="../jetleaf_scheduling/EnableScheduling-class.html">EnableScheduling</a></span> 
+
+</dt>
+<dd>
+  Enables scheduled task execution for the application.
+</dd>
+
+          <dt id="FixedDelayTrigger">
+  <span class="name "><a href="../jetleaf_scheduling/FixedDelayTrigger-class.html">FixedDelayTrigger</a></span> 
+
+</dt>
+<dd>
+  Trigger for fixed-delay task execution.
+</dd>
+
+          <dt id="FixedRateTrigger">
+  <span class="name "><a href="../jetleaf_scheduling/FixedRateTrigger-class.html">FixedRateTrigger</a></span> 
+
+</dt>
+<dd>
+  Trigger for fixed-rate task execution.
+</dd>
+
+          <dt id="Periodic">
+  <span class="name "><a href="../jetleaf_scheduling/Periodic-class.html">Periodic</a></span> 
+
+</dt>
+<dd>
+  Annotation that marks a method to be executed periodically at a fixed rate.
+</dd>
+
+          <dt id="PeriodicTrigger">
+  <span class="name "><a href="../jetleaf_scheduling/PeriodicTrigger-class.html">PeriodicTrigger</a></span> 
+
+</dt>
+<dd>
+  Simple periodic trigger for regular task execution.
+</dd>
+
+          <dt id="RunnableScheduledMethod">
+  <span class="name "><a href="../jetleaf_scheduling/RunnableScheduledMethod-class.html">RunnableScheduledMethod</a></span> 
+
+</dt>
+<dd>
+  Adapter that converts a method reflection into a <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Runnable-class.html">Runnable</a> for scheduling.
+</dd>
+
+          <dt id="RunnableTaskHolder">
+  <span class="name "><a href="../jetleaf_scheduling/RunnableTaskHolder-class.html">RunnableTaskHolder</a></span> 
+
+</dt>
+<dd>
+  A private internal container class used within the JetLeaf scheduling subsystem
+to encapsulate a <a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Runnable-class.html">Runnable</a> task along with its associated <a href="../jetleaf_scheduling/SchedulingTrigger.html">SchedulingTrigger</a>.
+</dd>
+
+          <dt id="Scheduled">
+  <span class="name "><a href="../jetleaf_scheduling/Scheduled-class.html">Scheduled</a></span> 
+
+</dt>
+<dd>
+  Schedules the annotated method for periodic execution.
+</dd>
+
+          <dt id="ScheduledTask">
+  <span class="name "><a href="../jetleaf_scheduling/ScheduledTask-class.html">ScheduledTask</a></span> 
+
+</dt>
+<dd>
+  Represents a scheduled task that can be queried and canceled.
+</dd>
+
+          <dt id="ScheduledTaskHolder">
+  <span class="name "><a href="../jetleaf_scheduling/ScheduledTaskHolder-class.html">ScheduledTaskHolder</a></span> 
+
+</dt>
+<dd>
+  Interface for components that hold and manage a collection of scheduled tasks.
+</dd>
+
+          <dt id="SchedulingAnnotationPodProcessor">
+  <span class="name "><a href="../jetleaf_scheduling/SchedulingAnnotationPodProcessor-class.html">SchedulingAnnotationPodProcessor</a></span> 
+
+</dt>
+<dd>
+  Core processor that detects and schedules methods annotated with scheduling annotations.
+</dd>
+
+          <dt id="SchedulingConfiguration">
+  <span class="name "><a href="../jetleaf_scheduling/SchedulingConfiguration-class.html">SchedulingConfiguration</a></span> 
+
+</dt>
+<dd>
+  Configuration class that sets up the infrastructure for JetLeaf task scheduling.
+</dd>
+
+          <dt id="SchedulingConfigurer">
+  <span class="name "><a href="../jetleaf_scheduling/SchedulingConfigurer-class.html">SchedulingConfigurer</a></span> 
+
+</dt>
+<dd>
+  Interface for programmatically configuring scheduled tasks in the JetLeaf framework.
+</dd>
+
+          <dt id="SchedulingTaskNameGenerator">
+  <span class="name "><a href="../jetleaf_scheduling/SchedulingTaskNameGenerator-class.html">SchedulingTaskNameGenerator</a></span> 
+
+</dt>
+<dd>
+  Generator for creating meaningful and unique task names.
+</dd>
+
+          <dt id="SchedulingTaskRegistrar">
+  <span class="name "><a href="../jetleaf_scheduling/SchedulingTaskRegistrar-class.html">SchedulingTaskRegistrar</a></span> 
+
+</dt>
+<dd>
+  A core JetLeaf component responsible for discovering, preparing, and registering
+scheduled tasks for execution within the framework’s task scheduler.
+</dd>
+
+          <dt id="SimpleScheduledTask">
+  <span class="name "><a href="../jetleaf_scheduling/SimpleScheduledTask-class.html">SimpleScheduledTask</a></span> 
+
+</dt>
+<dd>
+  Default implementation of <a href="../jetleaf_scheduling/ScheduledTask-class.html">ScheduledTask</a> that manages the complete task execution lifecycle.
+</dd>
+
+          <dt id="TaskExecutionContext">
+  <span class="name "><a href="../jetleaf_scheduling/TaskExecutionContext-class.html">TaskExecutionContext</a></span> 
+
+</dt>
+<dd>
+  Provides contextual information about a task's execution history and state.
+</dd>
+
+          <dt id="TaskScheduler">
+  <span class="name "><a href="../jetleaf_scheduling/TaskScheduler-class.html">TaskScheduler</a></span> 
+
+</dt>
+<dd>
+  Main interface for scheduling and managing asynchronous tasks.
+</dd>
+
+          <dt id="Trigger">
+  <span class="name "><a href="../jetleaf_scheduling/Trigger-class.html">Trigger</a></span> 
+
+</dt>
+<dd>
+  Determines the next execution time for a scheduled task.
+</dd>
+
+          <dt id="TriggerBuilder">
+  <span class="name "><a href="../jetleaf_scheduling/TriggerBuilder-class.html">TriggerBuilder</a></span> 
+
+</dt>
+<dd>
+  A builder class that simplifies the creation of various trigger types
+with a unified, fluent interface.
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="enums">
+      <h2>Enums</h2>
+      <dl>
+          <dt id="CronType">
+  <span class="name "><a href="../jetleaf_scheduling/CronType.html">CronType</a></span> 
+
+</dt>
+<dd>
+  Common cron expression presets for scheduling recurring tasks.
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+
+
+    <section class="summary offset-anchor" id="functions">
+      <h2>Functions</h2>
+      <dl class="callables">
+          <dt id="unawaited" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/unawaited.html">unawaited</a></span><span class="signature">(<wbr><span class="parameter" id="unawaited-param-future"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span> <span class="parameter-name">future</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Helper function to prevent warning for unawaited futures.
+  
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="typedefs">
+      <h2>Typedefs</h2>
+      <dl>
+          
+  <dt id="RunnableScheduler" class="callable">
+    <span class="name"><a href="../jetleaf_scheduling/RunnableScheduler.html">RunnableScheduler</a></span><span class="signature">
+      <span class="returntype parameter">= <a href="https://api.dart.dev/stable/3.9.2/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span> Function<span class="signature">()</span></span>
+    </span>
+    
+
+  </dt>
+  <dd>
+    A type alias representing a function signature for JetLeaf’s schedulable tasks.
+    
+
+  </dd>
+
+          
+  <dt id="SchedulingTrigger" class="">
+  <span class="name"><a href="../jetleaf_scheduling/SchedulingTrigger.html">SchedulingTrigger</a></span>
+    = (<span class="field">{<span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span> <span class="field-name">name</span>, </span><span class="field"><span class="type-annotation"><a href="../jetleaf_scheduling/Trigger-class.html">Trigger</a></span> <span class="field-name">trigger</span>}</span>)
+  </span>
+  
+
+</dt>
+<dd>
+  A record type representing a JetLeaf scheduling trigger configuration.
+  
+
+</dd>
+
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="exceptions">
+      <h2>Exceptions / Errors</h2>
+      <dl>
+          <dt id="InvalidCronExpressionException">
+  <span class="name "><a href="../jetleaf_scheduling/InvalidCronExpressionException-class.html">InvalidCronExpressionException</a></span> 
+
+</dt>
+<dd>
+  Exception thrown when a cron expression is invalid or malformed.
+</dd>
+
+          <dt id="SchedulerException">
+  <span class="name "><a href="../jetleaf_scheduling/SchedulerException-class.html">SchedulerException</a></span> 
+
+</dt>
+<dd>
+  Exception thrown when scheduling operations fail.
+</dd>
+
+          <dt id="TaskExecutionException">
+  <span class="name "><a href="../jetleaf_scheduling/TaskExecutionException-class.html">TaskExecutionException</a></span> 
+
+</dt>
+<dd>
+  Exception thrown when a scheduled task fails during execution.
+</dd>
+
+      </dl>
+    </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_scheduling</a></li>
+    <li class="self-crumb">jetleaf_scheduling.dart</li>
+</ol>
+
+    <h5><span class="package-name">jetleaf_scheduling</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <h5>jetleaf_scheduling library</h5>
+  </div><!--/sidebar-offcanvas-right-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

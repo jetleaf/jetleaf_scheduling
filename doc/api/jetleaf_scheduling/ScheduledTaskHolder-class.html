@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the ScheduledTaskHolder class from the jetleaf_scheduling library, for the Dart programming language.">
+  <title>ScheduledTaskHolder class - jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../jetleaf_scheduling/">jetleaf_scheduling.dart</a></li>
+    <li class="self-crumb">ScheduledTaskHolder class</li>
+  </ol>
+  <div class="self-name">ScheduledTaskHolder</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_scheduling&#47;jetleaf_scheduling-library-sidebar.html"
+    data-below-sidebar="jetleaf_scheduling&#47;ScheduledTaskHolder-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">ScheduledTaskHolder</span> class 
+    <a href="https://dart.dev/language/class-modifiers#abstract" class="feature feature-abstract" title="This type can not be directly constructed.">abstract</a>
+    <a href="https://dart.dev/language/class-modifiers#interface" class="feature feature-interface" title="This class can only be implemented (not extended or mixed in).">interface</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Interface for components that hold and manage a collection of scheduled tasks.</p>
+<p>This interface defines the contract for objects that maintain references
+to scheduled tasks and provide access to them for monitoring, management,
+and lifecycle operations. Implementations can range from simple task
+collections to complex task management systems with additional capabilities.</p>
+<h2 id="purpose">Purpose</h2>
+<p>The <code>ScheduledTaskHolder</code> interface enables:</p>
+<ul>
+<li><strong>Task Discovery</strong>: Access to all managed scheduled tasks</li>
+<li><strong>Monitoring</strong>: Inspection of task states and execution metrics</li>
+<li><strong>Lifecycle Management</strong>: Coordinated start/stop of task groups</li>
+<li><strong>Dependency Injection</strong>: Clean abstraction for task container access</li>
+<li><strong>Testing</strong>: Mockable interface for unit testing task-dependent code</li>
+</ul>
+<h2 id="implementation-guidelines">Implementation Guidelines</h2>
+<p>When implementing this interface, consider:</p>
+<ul>
+<li><strong>Thread Safety</strong>: Ensure thread-safe access to the task collection</li>
+<li><strong>Immutability</strong>: Return defensive copies or unmodifiable lists if appropriate</li>
+<li><strong>Lifecycle Awareness</strong>: Coordinate with task lifecycle events</li>
+<li><strong>Performance</strong>: Consider lazy loading or caching for large task collections</li>
+</ul>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="basic-implementation">Basic Implementation</h3>
+<pre class="language-dart"><code class="language-dart">final class SimpleTaskHolder implements ScheduledTaskHolder {
+  final List&lt;ScheduledTask&gt; _tasks = [];
+
+  void addTask(ScheduledTask task) {
+    _tasks.add(task);
+  }
+
+  @override
+  List&lt;ScheduledTask&gt; getScheduledTasks() =&gt; List.unmodifiable(_tasks);
+
+  @override
+  bool hasScheduledTasks() =&gt; _tasks.isNotEmpty;
+}
+</code></pre>
+<h3 id="usage-in-application-services">Usage in Application Services</h3>
+<pre class="language-dart"><code class="language-dart">@Service
+class TaskMonitoringService {
+  final ScheduledTaskHolder _taskHolder;
+  final MetricsCollector _metrics;
+
+  TaskMonitoringService(this._taskHolder, this._metrics);
+
+  void collectTaskMetrics() {
+    if (_taskHolder.hasScheduledTasks()) {
+      for (final task in _taskHolder.getScheduledTasks()) {
+        final metrics = {
+          'task_name': task.toString(),
+          'execution_count': task.getExecutionCount(),
+          'last_execution': task.getLastExecutionTime(),
+          'next_execution': task.getNextExecutionTime(),
+          'is_executing': task.getIsExecuting(),
+          'is_canceled': task.getIsCanceled(),
+        };
+        _metrics.record('scheduled_task', metrics);
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="integration-with-task-scheduler">Integration with Task Scheduler</h3>
+<pre class="language-dart"><code class="language-dart">final class ManagedTaskScheduler implements ScheduledTaskHolder {
+  final Map&lt;String, ScheduledTask&gt; _scheduledTasks = {};
+  final TaskScheduler _delegate;
+
+  ManagedTaskScheduler(this._delegate);
+
+  Future&lt;void&gt; scheduleTask(
+    String taskName, 
+    Function task, 
+    Trigger trigger
+  ) async {
+    final scheduledTask = SimpleScheduledTask(task, trigger, taskName);
+    _scheduledTasks[taskName] = scheduledTask;
+    await scheduledTask.start();
+  }
+
+  Future&lt;void&gt; cancelTask(String taskName) async {
+    final task = _scheduledTasks[taskName];
+    if (task != null) {
+      await task.cancel();
+      _scheduledTasks.remove(taskName);
+    }
+  }
+
+  @override
+  List&lt;ScheduledTask&gt; getScheduledTasks() =&gt; 
+      List.unmodifiable(_scheduledTasks.values);
+
+  @override
+  bool hasScheduledTasks() =&gt; _scheduledTasks.isNotEmpty;
+
+  ScheduledTask? getTask(String taskName) =&gt; _scheduledTasks[taskName];
+}
+</code></pre>
+<h3 id="testing-with-mock-implementation">Testing with Mock Implementation</h3>
+<pre class="language-dart"><code class="language-dart">class MockScheduledTaskHolder implements ScheduledTaskHolder {
+  final List&lt;ScheduledTask&gt; mockTasks = [];
+
+  @override
+  List&lt;ScheduledTask&gt; getScheduledTasks() =&gt; mockTasks;
+
+  @override
+  bool hasScheduledTasks() =&gt; mockTasks.isNotEmpty;
+}
+
+test('should handle empty task holder', () {
+  final holder = MockScheduledTaskHolder();
+  final monitor = TaskMonitoringService(holder, MockMetricsCollector());
+
+  expect(() =&gt; monitor.collectTaskMetrics(), returnsNormally);
+  expect(holder.hasScheduledTasks(), isFalse);
+});
+</code></pre>
+<h2 id="common-implementation-patterns">Common Implementation Patterns</h2>
+<h3 id="composite-task-holder">Composite Task Holder</h3>
+<pre class="language-dart"><code class="language-dart">final class CompositeTaskHolder implements ScheduledTaskHolder {
+  final List&lt;ScheduledTaskHolder&gt; _holders = [];
+
+  void addHolder(ScheduledTaskHolder holder) {
+    _holders.add(holder);
+  }
+
+  @override
+  List&lt;ScheduledTask&gt; getScheduledTasks() {
+    return _holders.expand((holder) =&gt; holder.getScheduledTasks()).toList();
+  }
+
+  @override
+  bool hasScheduledTasks() {
+    return _holders.any((holder) =&gt; holder.hasScheduledTasks());
+  }
+}
+</code></pre>
+<h3 id="filtered-task-holder">Filtered Task Holder</h3>
+<pre class="language-dart"><code class="language-dart">final class FilteredTaskHolder implements ScheduledTaskHolder {
+  final ScheduledTaskHolder _delegate;
+  final bool Function(ScheduledTask) _filter;
+
+  FilteredTaskHolder(this._delegate, this._filter);
+
+  @override
+  List&lt;ScheduledTask&gt; getScheduledTasks() {
+    return _delegate.getScheduledTasks().where(_filter).toList();
+  }
+
+  @override
+  bool hasScheduledTasks() {
+    return _delegate.getScheduledTasks().any(_filter);
+  }
+}
+
+// Usage: Get only active (non-canceled) tasks
+final activeTasksHolder = FilteredTaskHolder(
+  mainHolder, 
+  (task) =&gt; !task.getIsCanceled()
+);
+</code></pre>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<ul>
+<li><strong>Large Collections</strong>: For implementations with many tasks, consider
+lazy iteration or pagination in <code>getScheduledTasks()</code></li>
+<li><strong>Frequent Access</strong>: Cache the task list if it doesn't change often</li>
+<li><strong>Memory Usage</strong>: Be mindful of retaining references to completed tasks</li>
+<li><strong>Concurrent Modification</strong>: Use appropriate synchronization for
+collections that can be modified while being iterated</li>
+</ul>
+<h2 id="error-handling">Error Handling</h2>
+<p>Implementations should handle:</p>
+<ul>
+<li><strong>Concurrent modifications</strong> to the task collection</li>
+<li><strong>Null safety</strong> when tasks are removed during iteration</li>
+<li><strong>Task lifecycle exceptions</strong> when accessing task properties</li>
+<li><strong>Memory leaks</strong> from retaining completed or canceled tasks</li>
+</ul>
+<h2 id="extension-points">Extension Points</h2>
+<p>Common extensions to this interface include:</p>
+<ul>
+<li>Adding methods for task lookup by name or criteria</li>
+<li>Supporting task grouping or categorization</li>
+<li>Providing bulk operations (start all, cancel all)</li>
+<li>Adding lifecycle event listeners</li>
+<li>Supporting task persistence and restoration</li>
+</ul>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+        
+
+          <dt>Implementers</dt>
+          <dd><ul class="comma-separated clazz-relationships">
+              <li><a href="../jetleaf_scheduling/SchedulingAnnotationPodProcessor-class.html">SchedulingAnnotationPodProcessor</a></li>
+              <li><a href="../jetleaf_scheduling/SchedulingTaskRegistrar-class.html">SchedulingTaskRegistrar</a></li>
+          </ul></dd>
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="getScheduledTasks" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/ScheduledTaskHolder/getScheduledTasks.html">getScheduledTasks</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../jetleaf_scheduling/ScheduledTask-class.html">ScheduledTask</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns a list of all scheduled tasks managed by this holder.
+  
+
+</dd>
+
+        <dt id="hasScheduledTasks" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/ScheduledTaskHolder/hasScheduledTasks.html">hasScheduledTasks</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns whether this holder manages any scheduled tasks.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+    <li class="self-crumb">ScheduledTaskHolder class</li>
+</ol>
+
+    <h5>jetleaf_scheduling library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

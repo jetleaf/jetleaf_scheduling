@@ -26,14 +26,10 @@ environment:
 
 dependencies:
   meta: ^1.17.0
-  jetleaf_lang:
-    path: ../jetleaf_lang
-  jetleaf_logging:
-    path: ../jetleaf_logging
-  jetleaf_pod:
-    path: ../jetleaf_pod
-  jetleaf_core:
-    path: ../jetleaf_core
+  jetleaf_lang: ^1.0.1
+  jetleaf_logging: ^1.0.1
+  jetleaf_pod: ^1.0.1
+  jetleaf_core: ^1.0.1
 
 dev_dependencies:
   test: ^1.25.0

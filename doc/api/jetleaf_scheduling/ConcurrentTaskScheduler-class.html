@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the ConcurrentTaskScheduler class from the jetleaf_scheduling library, for the Dart programming language.">
+  <title>ConcurrentTaskScheduler class - jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../jetleaf_scheduling/">jetleaf_scheduling.dart</a></li>
+    <li class="self-crumb">ConcurrentTaskScheduler class</li>
+  </ol>
+  <div class="self-name">ConcurrentTaskScheduler</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_scheduling&#47;jetleaf_scheduling-library-sidebar.html"
+    data-below-sidebar="jetleaf_scheduling&#47;ConcurrentTaskScheduler-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">ConcurrentTaskScheduler</span> class 
+    <a href="https://dart.dev/language/class-modifiers#final" class="feature feature-final" title="This class can neither be extended, implemented, nor mixed in.">final</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>A <a href="../jetleaf_scheduling/TaskScheduler-class.html">TaskScheduler</a> implementation that supports concurrent task execution
+with configurable concurrency limits and task queue management.</p>
+<p>This scheduler manages task execution with controlled concurrency,
+preventing system overload while maintaining efficient task processing.
+It includes features for monitoring task execution statistics and
+graceful shutdown handling.</p>
+<p><strong>Example:</strong></p>
+<pre class="language-dart"><code class="language-dart">// Create scheduler with custom concurrency limits
+final scheduler = ConcurrentTaskScheduler(
+  maxConcurrency: 5,
+  queueCapacity: 500,
+);
+
+// Schedule multiple tasks - they will execute within concurrency limits
+await scheduler.schedule(
+  () =&gt; processData(),
+  FixedRateTrigger(Duration(seconds: 30)),
+);
+
+await scheduler.schedule(
+  () =&gt; generateReport(),
+  CronTrigger('0 0 * * * *'),
+);
+
+// Monitor scheduler statistics
+print('Active tasks: ${scheduler.getActiveTaskCount()}');
+print('Queued tasks: ${scheduler.getQueuedTaskCount()}');
+print('Total tasks: ${scheduler.getTotalTaskCount()}');
+
+// Graceful shutdown
+await scheduler.shutdown();
+</code></pre>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+  <dt>Implemented types</dt>
+  <dd>
+    <ul class="comma-separated clazz-relationships">
+        <li><a href="../jetleaf_scheduling/TaskScheduler-class.html">TaskScheduler</a></li>
+    </ul>
+  </dd>
+        
+
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="ConcurrentTaskScheduler.new" class="callable">
+          <span class="name"><a href="../jetleaf_scheduling/ConcurrentTaskScheduler/ConcurrentTaskScheduler.html">ConcurrentTaskScheduler.new</a></span><span class="signature">({<span class="parameter" id="-param-maxConcurrency"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">maxConcurrency</span>, </span><span class="parameter" id="-param-queueCapacity"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">queueCapacity</span></span>})</span>
+        </dt>
+        <dd>
+          A <a href="../jetleaf_scheduling/TaskScheduler-class.html">TaskScheduler</a> implementation that supports concurrent task execution
+with configurable concurrency limits and task queue management.
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="getActiveTaskCount" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/ConcurrentTaskScheduler/getActiveTaskCount.html">getActiveTaskCount</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the number of currently active tasks.
+  
+
+</dd>
+
+        <dt id="getQueuedTaskCount" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/ConcurrentTaskScheduler/getQueuedTaskCount.html">getQueuedTaskCount</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the number of queued tasks waiting for execution.
+  
+
+</dd>
+
+        <dt id="getTotalTaskCount" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/ConcurrentTaskScheduler/getTotalTaskCount.html">getTotalTaskCount</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Returns the total number of managed tasks.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="schedule" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/ConcurrentTaskScheduler/schedule.html">schedule</a></span><span class="signature">(<wbr><span class="parameter" id="schedule-param-task"><span class="type-annotation"><a href="../jetleaf_scheduling/RunnableScheduler.html">RunnableScheduler</a></span> <span class="parameter-name">task</span>, </span><span class="parameter" id="schedule-param-trigger"><span class="type-annotation"><a href="../jetleaf_scheduling/Trigger-class.html">Trigger</a></span> <span class="parameter-name">trigger</span>, </span><span class="parameter" id="schedule-param-taskName"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">taskName</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../jetleaf_scheduling/ScheduledTask-class.html">ScheduledTask</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Schedules a task for execution according to the given <code>trigger</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="scheduleAtFixedRate" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/ConcurrentTaskScheduler/scheduleAtFixedRate.html">scheduleAtFixedRate</a></span><span class="signature">(<wbr><span class="parameter" id="scheduleAtFixedRate-param-task"><span class="type-annotation"><a href="../jetleaf_scheduling/RunnableScheduler.html">RunnableScheduler</a></span> <span class="parameter-name">task</span>, </span><span class="parameter" id="scheduleAtFixedRate-param-period"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">period</span>, </span><span class="parameter" id="scheduleAtFixedRate-param-taskName"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">taskName</span>, [</span><span class="parameter" id="scheduleAtFixedRate-param-initialDelay"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a>?</span> <span class="parameter-name">initialDelay</span></span>])
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../jetleaf_scheduling/ScheduledTask-class.html">ScheduledTask</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Schedules a task for repeated execution at a fixed rate.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="scheduleWithFixedDelay" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/ConcurrentTaskScheduler/scheduleWithFixedDelay.html">scheduleWithFixedDelay</a></span><span class="signature">(<wbr><span class="parameter" id="scheduleWithFixedDelay-param-task"><span class="type-annotation"><a href="../jetleaf_scheduling/RunnableScheduler.html">RunnableScheduler</a></span> <span class="parameter-name">task</span>, </span><span class="parameter" id="scheduleWithFixedDelay-param-delay"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">delay</span>, </span><span class="parameter" id="scheduleWithFixedDelay-param-taskName"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">taskName</span>, [</span><span class="parameter" id="scheduleWithFixedDelay-param-initialDelay"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a>?</span> <span class="parameter-name">initialDelay</span></span>])
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../jetleaf_scheduling/ScheduledTask-class.html">ScheduledTask</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Schedules a task for repeated execution with a fixed delay.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="shutdown" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/ConcurrentTaskScheduler/shutdown.html">shutdown</a></span><span class="signature">(<wbr>[<span class="parameter" id="shutdown-param-force"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">force</span> = <span class="default-value">false</span></span>])
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Shuts down the scheduler, canceling all scheduled tasks.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+    <li class="self-crumb">ConcurrentTaskScheduler class</li>
+</ol>
+
+    <h5>jetleaf_scheduling library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

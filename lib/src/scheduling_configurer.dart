@@ -1,6 +1,19 @@
+// ---------------------------------------------------------------------------
+// 🍃 JetLeaf Framework - https://jetleaf.hapnium.com
+//
+// Copyright © 2025 Hapnium & JetLeaf Contributors. All rights reserved.
+//
+// This source file is part of the JetLeaf Framework and is protected
+// under copyright law. You may not copy, modify, or distribute this file
+// except in compliance with the JetLeaf license.
+//
+// For licensing terms, see the LICENSE file in the root of this project.
+// ---------------------------------------------------------------------------
+// 
+// 🔧 Powered by Hapnium — the Dart backend engine 🍃
+
 import 'dart:async';
 
-import 'package:jetleaf_env/env.dart';
 import 'package:jetleaf_lang/lang.dart';
 import 'package:jetleaf_logging/logging.dart';
 import 'package:jetleaf_pod/pod.dart';
@@ -460,9 +473,7 @@ final class SchedulingTaskRegistrar implements InitializingPod, DisposablePod, S
   
   @override
   Future<void> onReady() async {
-    if (scheduler == null ) {
-      scheduler = ConcurrentTaskScheduler(maxConcurrency: maxConcurrency, queueCapacity: queueCapacity);
-    }
+    scheduler ??= ConcurrentTaskScheduler(maxConcurrency: maxConcurrency, queueCapacity: queueCapacity);
 
     if (_runnableTaskHolders.isNotEmpty) {
       for (final holder in _runnableTaskHolders.entries) {

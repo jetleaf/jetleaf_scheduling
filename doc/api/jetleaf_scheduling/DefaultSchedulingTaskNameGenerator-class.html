@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the DefaultSchedulingTaskNameGenerator class from the jetleaf_scheduling library, for the Dart programming language.">
+  <title>DefaultSchedulingTaskNameGenerator class - jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../jetleaf_scheduling/">jetleaf_scheduling.dart</a></li>
+    <li class="self-crumb">DefaultSchedulingTaskNameGenerator class</li>
+  </ol>
+  <div class="self-name">DefaultSchedulingTaskNameGenerator</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_scheduling&#47;jetleaf_scheduling-library-sidebar.html"
+    data-below-sidebar="jetleaf_scheduling&#47;DefaultSchedulingTaskNameGenerator-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">DefaultSchedulingTaskNameGenerator</span> class 
+    <a href="https://dart.dev/language/class-modifiers#final" class="feature feature-final" title="This class can neither be extended, implemented, nor mixed in.">final</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Default implementation of <a href="../jetleaf_scheduling/SchedulingTaskNameGenerator-class.html">SchedulingTaskNameGenerator</a> that creates
+structured, hierarchical task names with environment-aware prefixes.</p>
+<p>This generator produces task names that include contextual information
+about the task's origin, making it easy to identify and manage scheduled
+tasks in complex applications. The naming strategy supports both
+environment-specific prefixes and detailed component information.</p>
+<h2 id="name-generation-strategy">Name Generation Strategy</h2>
+<p>The generator uses the following priority for name construction:</p>
+<ol>
+<li><strong>Name prefix</strong>: If <code>jetleaf.scheduling.name-prefix</code> is set
+in the environment, uses: <code>{prefix}-{methodName}</code></li>
+<li><strong>Default Pattern</strong>: If no environment property is set, uses:
+<code>{annotation}-{podName}-{className}-{methodName}</code></li>
+</ol>
+<h2 id="name-components">Name Components</h2>
+<ul>
+<li><strong>Annotation</strong>: The scheduling annotation type (e.g., 'scheduled', 'cron')</li>
+<li><strong>Pod Name</strong>: The name of the pod containing the scheduled method</li>
+<li><strong>Class Name</strong>: The simple name of the class (extracted from qualified name)</li>
+<li><strong>Method Name</strong>: The name of the scheduled method</li>
+<li><strong>Environment Prefix</strong>: Optional prefix from application properties</li>
+</ul>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="with-name-prefix">With Name prefix</h3>
+<pre class="language-dart"><code class="language-dart">// application.properties:
+// jetleaf.scheduling.name-prefix=myapp
+
+final generator = DefaultSchedulingTaskNameGenerator(
+  'userService', 
+  'scheduled', 
+  environment
+);
+
+final taskName = generator.generate(userServiceClass, cleanupMethod);
+print(taskName); // Output: "myapp-cleanup"
+</code></pre>
+<h3 id="without-name-prefix">Without Name prefix</h3>
+<pre class="language-dart"><code class="language-dart">final generator = DefaultSchedulingTaskNameGenerator(
+  'emailService', 
+  'cron'
+);
+
+final taskName = generator.generate(emailServiceClass, sendNewsletterMethod);
+print(taskName); 
+// Output: "cron-emailservice-emailservice-sendnewsletter"
+// (assuming class qualified name is 'package:example/text.dart.EmailService')
+</code></pre>
+<h3 id="integration-with-scheduling-processor">Integration with Scheduling Processor</h3>
+<pre class="language-dart"><code class="language-dart">final class NamedSchedulingProcessor extends SchedulingAnnotationPodProcessor {
+  final SchedulingTaskNameGenerator _nameGenerator;
+
+  NamedSchedulingProcessor(
+    TaskScheduler taskScheduler, 
+    this._nameGenerator
+  ) : super(taskScheduler);
+
+  @override
+  Future&lt;Object?&gt; processAfterInitialization(Object pod, Class podClass, String name) async {
+    // Process scheduling annotations...
+    for (final method in podClass.getMethods()) {
+      if (method.hasDirectAnnotation&lt;Scheduled&gt;()) {
+        final taskName = _nameGenerator.generate(podClass, method);
+        // Use the generated name for task scheduling
+        await _scheduleMethod(pod, method, taskName);
+      }
+    }
+    return super.processAfterInitialization(pod, podClass, name);
+  }
+}
+</code></pre>
+<h2 id="configuration-options">Configuration Options</h2>
+<h3 id="name-prefix">Name prefix</h3>
+<p>Set the <code>jetleaf.scheduling.name-prefix</code> property to customize all task names:</p>
+<pre class="language-properties"><code class="language-properties"># application.properties
+jetleaf.scheduling.name-prefix=my-application
+</code></pre>
+<h3 id="programmatic-configuration">Programmatic Configuration</h3>
+<pre class="language-dart"><code class="language-dart">@Configuration
+class SchedulingConfig {
+  @Pod
+  SchedulingTaskNameGenerator taskNameGenerator(Environment environment) {
+    return DefaultSchedulingTaskNameGenerator(
+      'main',           // Default pod name
+      'scheduled',      // Default annotation type
+      environment       // Environment for property lookup
+    );
+  }
+}
+</code></pre>
+<h2 id="name-examples">Name Examples</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Generated Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>With prefix 'prod'</td>
+<td><code>prod-cleanupusers</code></td>
+</tr>
+<tr>
+<td>@Scheduled in UserService</td>
+<td><code>scheduled-userservice-userservice-cleanup</code></td>
+</tr>
+<tr>
+<td>@Cron in ReportService</td>
+<td><code>cron-reportservice-reportservice-generate</code></td>
+</tr>
+<tr>
+<td>@Periodic in CacheService</td>
+<td><code>periodic-cacheservice-cacheservice-refresh</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="benefits">Benefits</h2>
+<ul>
+<li><strong>Environment Awareness</strong>: Different names per environment (dev, staging, prod)</li>
+<li><strong>Clear Identification</strong>: Easy to trace tasks back to their source code</li>
+<li><strong>Namespace Separation</strong>: Prevents name collisions in multi-tenant systems</li>
+<li><strong>Monitoring Friendly</strong>: Structured names work well with logging and metrics systems</li>
+<li><strong>Configuration Driven</strong>: Environment properties allow runtime customization</li>
+</ul>
+<h2 id="customization">Customization</h2>
+<p>Extend or wrap this generator for custom naming strategies:</p>
+<pre class="language-dart"><code class="language-dart">final class CustomNameGenerator implements SchedulingTaskNameGenerator {
+  final DefaultSchedulingTaskNameGenerator _delegate;
+  final String _instanceId;
+
+  CustomNameGenerator(this._delegate, this._instanceId);
+
+  @override
+  String generate(Class type, Method method) {
+    final baseName = _delegate.generate(type, method);
+    return '$_instanceId-$baseName';
+  }
+}
+</code></pre>
+<h2 id="testing">Testing</h2>
+<pre class="language-dart"><code class="language-dart">test('should use environment prefix when available', () {
+  final environment = MockEnvironment();
+  when(environment.getProperty('jetleaf.scheduling.name-prefix'))
+      .thenReturn('testapp');
+
+  final generator = DefaultSchedulingTaskNameGenerator(
+    'service', 
+    'scheduled', 
+    environment
+  );
+  final mockClass = MockClass();
+  final mockMethod = MockMethod();
+
+  when(mockClass.getQualifiedName()).thenReturn('package:example/text.dart.Service');
+  when(mockMethod.getName()).thenReturn('task');
+
+  final name = generator.generate(mockClass, mockMethod);
+
+  expect(name, equals('testapp-task'));
+});
+
+test('should use default pattern without environment prefix', () {
+  final generator = DefaultSchedulingTaskNameGenerator('myservice', 'cron');
+  final mockClass = MockClass();
+  final mockMethod = MockMethod();
+
+  when(mockClass.getQualifiedName()).thenReturn('package:example/text.dart.MyService');
+  when(mockMethod.getName()).thenReturn('job');
+
+  final name = generator.generate(mockClass, mockMethod);
+
+  expect(name, equals('cron-myservice-myservice-job'));
+});
+</code></pre>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<ul>
+<li>Environment property lookup is cached internally by the Environment</li>
+<li>String operations are efficient for typical class and method names</li>
+<li>No external dependencies beyond the initial configuration</li>
+<li>Suitable for use during application startup and pod initialization</li>
+</ul>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+  <dt>Implemented types</dt>
+  <dd>
+    <ul class="comma-separated clazz-relationships">
+        <li><a href="../jetleaf_scheduling/SchedulingTaskNameGenerator-class.html">SchedulingTaskNameGenerator</a></li>
+    </ul>
+  </dd>
+        
+
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="DefaultSchedulingTaskNameGenerator.new" class="callable">
+          <span class="name"><a href="../jetleaf_scheduling/DefaultSchedulingTaskNameGenerator/DefaultSchedulingTaskNameGenerator.html">DefaultSchedulingTaskNameGenerator.new</a></span><span class="signature">(<span class="parameter" id="-param-_podName"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">_podName</span>, </span><span class="parameter" id="-param-_annotation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span> <span class="parameter-name">_annotation</span>, [</span><span class="parameter" id="-param-_namePrefix"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">_namePrefix</span></span>])</span>
+        </dt>
+        <dd>
+          Default implementation of <a href="../jetleaf_scheduling/SchedulingTaskNameGenerator-class.html">SchedulingTaskNameGenerator</a> that creates
+structured, hierarchical task names with environment-aware prefixes.
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="generate" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/DefaultSchedulingTaskNameGenerator/generate.html">generate</a></span><span class="signature">(<wbr><span class="parameter" id="generate-param-type"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Class-class.html">Class</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="generate-param-method"><span class="type-annotation"><a href="https://pub.dev/documentation/jetleaf_lang/1.0.1/lang/Method-class.html">Method</a></span> <span class="parameter-name">method</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Generates a unique and descriptive name for a scheduled task.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/DefaultSchedulingTaskNameGenerator/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A string representation of this object.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+    <li class="self-crumb">DefaultSchedulingTaskNameGenerator class</li>
+</ol>
+
+    <h5>jetleaf_scheduling library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

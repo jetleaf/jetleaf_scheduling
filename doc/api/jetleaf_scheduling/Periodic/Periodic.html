@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Periodic.new constructor from Class Periodic from the jetleaf_scheduling library, for the Dart programming language.">
+  <title>Periodic.new constructor - Periodic - jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling.dart</a></li>
+    <li><a href="../../jetleaf_scheduling/Periodic-class.html">Periodic</a></li>
+    <li class="self-crumb">Periodic.new const constructor</li>
+  </ol>
+  <div class="self-name">Periodic.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_scheduling&#47;Periodic-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">Periodic</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      const
+      <span class="name ">Periodic</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="-param-period"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">period</span>, {</span></li>
+<li><span class="parameter" id="-param-zone"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">zone</span>, </span></li>
+</ol>})
+    </section>
+    
+<section class="desc markdown">
+  <p>Annotation that marks a method to be executed periodically at a fixed rate.</p>
+<p>This annotation schedules a method to run repeatedly with a fixed time period
+between the start of each execution. The period is measured from the start
+of one execution to the start of the next, regardless of how long the
+method takes to complete.</p>
+<h2 id="usage-examples">Usage Examples</h2>
+<pre class="language-dart"><code class="language-dart">@Service
+class MonitoringService {
+  // Run every 30 seconds in system default timezone
+  @Periodic(Duration(seconds: 30))
+  void healthCheck() {
+    // Check system health every 30 seconds
+  }
+
+  // Run every 5 minutes in UTC timezone
+  @Periodic(Duration(minutes: 5), zone: 'UTC')
+  void metricsCollection() {
+    // Collect and report metrics every 5 minutes
+  }
+
+  // Run every hour in New York timezone
+  @Periodic(Duration(hours: 1), zone: 'America/New_York')
+  void businessHourTask() {
+    // Execute during New York business hours
+  }
+}
+</code></pre>
+<h2 id="timezone-considerations">Timezone Considerations</h2>
+<p>When a timezone is specified, the period is calculated relative to
+that timezone. This is particularly important for longer periods
+that may span daylight saving time transitions:</p>
+<pre class="language-dart"><code class="language-dart">// This task will run daily at the same local time in New York,
+// adjusting automatically for daylight saving time
+@Periodic(Duration(days: 1), zone: 'America/New_York')
+void dailyReport() {
+  // Generate daily report at same local time each day
+}
+</code></pre>
+<h2 id="comparison-with-other-scheduling-annotations">Comparison with Other Scheduling Annotations</h2>
+<ul>
+<li><strong>vs @Scheduled(fixedRate)</strong>: Similar behavior, but @Periodic is
+dedicated to fixed-rate scheduling with simpler configuration</li>
+<li><strong>vs @Scheduled(fixedDelay)</strong>: Fixed delay waits for completion
+before scheduling next execution, while fixed rate runs at
+fixed intervals regardless of completion</li>
+<li><strong>vs @Cron</strong>: Cron provides calendar-based scheduling, while
+@Periodic provides simple interval-based scheduling</li>
+</ul>
+<h2 id="error-handling">Error Handling</h2>
+<p>Exceptions thrown by periodic methods are caught and logged by the
+scheduler, but do not stop subsequent executions. The method will
+continue to be called according to the fixed rate schedule:</p>
+<pre class="language-dart"><code class="language-dart">@Periodic(Duration(minutes: 1))
+void sometimesFailingTask() {
+  if (Random().nextBool()) {
+    throw Exception('Random failure');
+  }
+  // This method will continue running every minute despite occasional failures
+}
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ul>
+<li>Use for tasks that should run at consistent intervals regardless of
+execution time</li>
+<li>Consider method execution time relative to period to avoid overlapping</li>
+<li>Use appropriate timezone for business-hour sensitive tasks</li>
+<li>Implement proper error handling within the method</li>
+<li>Consider using @Async for long-running periodic tasks</li>
+<li>Monitor execution times to ensure they don't exceed the period</li>
+</ul>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<ul>
+<li>Each periodic method creates a separate scheduled task</li>
+<li>Consider thread pool size when many periodic tasks run concurrently</li>
+<li>Monitor for overlapping executions that may consume excessive resources</li>
+<li>Use appropriate period durations based on task criticality and resources</li>
+</ul>
+<h2 id="testing">Testing</h2>
+<pre class="language-dart"><code class="language-dart">test('periodic task execution', () async {
+  final scheduler = TestTaskScheduler();
+  final service = MonitoringService();
+  
+  // Test that method is scheduled with correct period
+  expect(scheduler.getPeriod('healthCheck'), Duration(seconds: 30));
+});
+</code></pre>
+<p>Creates a periodic scheduling annotation with the specified period.</p>
+<p>@param period The fixed time period between executions. Must be positive.
+@param zone Optional timezone identifier for period calculation.
+Uses IANA timezone format (e.g., 'UTC', 'America/New_York').
+If not specified, uses the system default timezone.</p>
+<p>Example:</p>
+<pre class="language-dart"><code class="language-dart">// Basic usage with duration only
+@Periodic(Duration(minutes: 5))
+void everyFiveMinutes() { }
+
+// With timezone specification
+@Periodic(Duration(hours: 1), zone: 'Europe/London')
+void hourlyInLondon() { }
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">const Periodic(this.period, {super.zone});</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/Periodic-class.html">Periodic</a></li>
+    <li class="self-crumb">Periodic.new const constructor</li>
+</ol>
+
+    <h5>Periodic class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

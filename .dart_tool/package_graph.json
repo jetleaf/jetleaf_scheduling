@@ -57,7 +57,7 @@
     },
     {
       "name": "jetleaf_core",
-      "version": "1.0.0+2",
+      "version": "1.0.1",
       "dependencies": [
         "jetleaf_convert",
         "jetleaf_env",
@@ -70,7 +70,7 @@
     },
     {
       "name": "jetleaf_pod",
-      "version": "1.0.0+2",
+      "version": "1.0.1",
       "dependencies": [
         "jetleaf_convert",
         "jetleaf_env",
@@ -82,17 +82,18 @@
     },
     {
       "name": "jetleaf_logging",
-      "version": "1.0.0+2",
+      "version": "1.0.1",
       "dependencies": [
         "jetleaf_lang"
       ]
     },
     {
       "name": "jetleaf_lang",
-      "version": "1.0.0+2",
+      "version": "1.0.1",
       "dependencies": [
         "analyzer",
         "dart_internal",
+        "jetleaf_build",
         "meta",
         "path"
       ]
@@ -339,7 +340,7 @@
     },
     {
       "name": "analyzer",
-      "version": "8.4.0",
+      "version": "8.4.1",
       "dependencies": [
         "_fe_analyzer_shared",
         "collection",
@@ -356,8 +357,18 @@
       ]
     },
     {
+      "name": "jetleaf_utils",
+      "version": "1.0.1",
+      "dependencies": [
+        "jetleaf_lang",
+        "jetleaf_logging",
+        "meta",
+        "stack_trace"
+      ]
+    },
+    {
       "name": "jetleaf_env",
-      "version": "1.0.0+2",
+      "version": "1.0.1",
       "dependencies": [
         "jetleaf_convert",
         "jetleaf_lang",
@@ -367,21 +378,20 @@
       ]
     },
     {
-      "name": "jetleaf_utils",
-      "version": "1.0.0+2",
-      "dependencies": [
-        "jetleaf_lang",
-        "jetleaf_logging",
-        "meta",
-        "stack_trace"
-      ]
-    },
-    {
       "name": "jetleaf_convert",
-      "version": "1.0.0+2",
+      "version": "1.0.1",
       "dependencies": [
         "jetleaf_lang",
         "meta"
+      ]
+    },
+    {
+      "name": "jetleaf_build",
+      "version": "1.0.0",
+      "dependencies": [
+        "analyzer",
+        "meta",
+        "path"
       ]
     },
     {

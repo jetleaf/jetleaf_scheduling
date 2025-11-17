@@ -1,4 +1,17 @@
-import 'package:jetleaf_env/env.dart';
+// ---------------------------------------------------------------------------
+// 🍃 JetLeaf Framework - https://jetleaf.hapnium.com
+//
+// Copyright © 2025 Hapnium & JetLeaf Contributors. All rights reserved.
+//
+// This source file is part of the JetLeaf Framework and is protected
+// under copyright law. You may not copy, modify, or distribute this file
+// except in compliance with the JetLeaf license.
+//
+// For licensing terms, see the LICENSE file in the root of this project.
+// ---------------------------------------------------------------------------
+// 
+// 🔧 Powered by Hapnium — the Dart backend engine 🍃
+
 import 'package:jetleaf_lang/lang.dart';
 import 'package:jetleaf_logging/logging.dart';
 import 'package:jetleaf_pod/pod.dart';
@@ -450,7 +463,7 @@ final class SchedulingAnnotationPodProcessor extends PodInitializationProcessor 
   /// );
   /// ```
   /// {@endtemplate}
-  SchedulingTaskRegistrar _schedulingTaskRegistrar = SchedulingTaskRegistrar();
+  final SchedulingTaskRegistrar _schedulingTaskRegistrar = SchedulingTaskRegistrar();
 
   /// {@template SchedulingTaskNameGenerator}
   /// Generator for creating meaningful and unique task names.
@@ -535,14 +548,14 @@ final class SchedulingAnnotationPodProcessor extends PodInitializationProcessor 
   @override
   Future<void> onApplicationEvent(ApplicationContextEvent event) async {
     if (event.getApplicationContext() == _applicationContext) {
-      if (event is ContextRefreshedEvent) {
+      if (event is ContextSetupEvent) {
         await _completeInitialization();
       }
     }
   }
   
   @override
-  bool supportsEventOf(ApplicationEvent event) => event is ContextClosedEvent || event is ContextRefreshedEvent;
+  bool supportsEventOf(ApplicationEvent event) => event is ContextClosedEvent || event is ContextSetupEvent;
   
   @override
   String getPackageName() => PackageNames.CORE;
@@ -1154,7 +1167,7 @@ final class SchedulingAnnotationPodProcessor extends PodInitializationProcessor 
   
   @override
   Future<void> processBeforeDestruction(Object pod, Class podClass, String name) async {
-    return Future.value([await _cancelScheduledTasks(pod)]);
+    return await _cancelScheduledTasks(pod);
   }
 
   /// {@template CancelScheduledTasks}
