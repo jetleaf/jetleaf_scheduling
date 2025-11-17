@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the ConcurrentTaskScheduler.new constructor from Class ConcurrentTaskScheduler from the jetleaf_scheduling library, for the Dart programming language.">
+  <title>ConcurrentTaskScheduler.new constructor - ConcurrentTaskScheduler - jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling.dart</a></li>
+    <li><a href="../../jetleaf_scheduling/ConcurrentTaskScheduler-class.html">ConcurrentTaskScheduler</a></li>
+    <li class="self-crumb">ConcurrentTaskScheduler.new constructor</li>
+  </ol>
+  <div class="self-name">ConcurrentTaskScheduler.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_scheduling&#47;ConcurrentTaskScheduler-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">ConcurrentTaskScheduler</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+      <span class="name ">ConcurrentTaskScheduler</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-maxConcurrency"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">maxConcurrency</span>, </span></li>
+<li><span class="parameter" id="-param-queueCapacity"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">queueCapacity</span>, </span></li>
+</ol>})
+    </section>
+    
+<section class="desc markdown">
+  <p>A <a href="../../jetleaf_scheduling/TaskScheduler-class.html">TaskScheduler</a> implementation that supports concurrent task execution
+with configurable concurrency limits and task queue management.</p>
+<p>This scheduler manages task execution with controlled concurrency,
+preventing system overload while maintaining efficient task processing.
+It includes features for monitoring task execution statistics and
+graceful shutdown handling.</p>
+<p><strong>Example:</strong></p>
+<pre class="language-dart"><code class="language-dart">// Create scheduler with custom concurrency limits
+final scheduler = ConcurrentTaskScheduler(
+  maxConcurrency: 5,
+  queueCapacity: 500,
+);
+
+// Schedule multiple tasks - they will execute within concurrency limits
+await scheduler.schedule(
+  () =&gt; processData(),
+  FixedRateTrigger(Duration(seconds: 30)),
+);
+
+await scheduler.schedule(
+  () =&gt; generateReport(),
+  CronTrigger('0 0 * * * *'),
+);
+
+// Monitor scheduler statistics
+print('Active tasks: ${scheduler.getActiveTaskCount()}');
+print('Queued tasks: ${scheduler.getQueuedTaskCount()}');
+print('Total tasks: ${scheduler.getTotalTaskCount()}');
+
+// Graceful shutdown
+await scheduler.shutdown();
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">ConcurrentTaskScheduler({int? maxConcurrency, int? queueCapacity})
+  : _maxConcurrency = maxConcurrency ?? 10, _queueCapacity = queueCapacity ?? 1000;</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/ConcurrentTaskScheduler-class.html">ConcurrentTaskScheduler</a></li>
+    <li class="self-crumb">ConcurrentTaskScheduler.new constructor</li>
+</ol>
+
+    <h5>ConcurrentTaskScheduler class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

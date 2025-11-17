@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the TriggerBuilder.new constructor from Class TriggerBuilder from the jetleaf_scheduling library, for the Dart programming language.">
+  <title>TriggerBuilder.new constructor - TriggerBuilder - jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling.dart</a></li>
+    <li><a href="../../jetleaf_scheduling/TriggerBuilder-class.html">TriggerBuilder</a></li>
+    <li class="self-crumb">TriggerBuilder.new constructor</li>
+  </ol>
+  <div class="self-name">TriggerBuilder.new</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="jetleaf_scheduling&#47;TriggerBuilder-class-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-constructor">TriggerBuilder</span> constructor 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+      <span class="name ">TriggerBuilder</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-fixedDelay"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a>?</span> <span class="parameter-name">fixedDelay</span>, </span></li>
+<li><span class="parameter" id="-param-fixedRate"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a>?</span> <span class="parameter-name">fixedRate</span>, </span></li>
+<li><span class="parameter" id="-param-expression"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">expression</span>, </span></li>
+<li><span class="parameter" id="-param-delayPeriod"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a>?</span> <span class="parameter-name">delayPeriod</span>, </span></li>
+<li><span class="parameter" id="-param-period"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Duration-class.html">Duration</a>?</span> <span class="parameter-name">period</span>, </span></li>
+<li><span class="parameter" id="-param-zone"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">zone</span>, </span></li>
+</ol>})
+    </section>
+    
+<section class="desc markdown">
+  <p>A builder class that simplifies the creation of various trigger types
+with a unified, fluent interface.</p>
+<p>This builder provides a convenient way to create different types of
+scheduling triggers without needing to remember the specific constructor
+requirements for each trigger type. It automatically selects the
+appropriate trigger implementation based on the provided parameters
+and includes comprehensive validation and error messaging.</p>
+<h2 id="supported-trigger-types">Supported Trigger Types</h2>
+<p>The builder automatically creates the appropriate trigger based on
+which parameter is provided:</p>
+<ul>
+<li><strong>CronTrigger</strong>: Created when <code>expression</code> is provided</li>
+<li><strong>FixedDelayTrigger</strong>: Created when <code>fixedDelay</code> is provided</li>
+<li><strong>FixedRateTrigger</strong>: Created when <code>fixedRate</code> is provided</li>
+<li><strong>PeriodicTrigger</strong>: Created when <code>period</code> is provided</li>
+</ul>
+<h2 id="usage-examples">Usage Examples</h2>
+<pre class="language-dart"><code class="language-dart">// Create a cron trigger for complex scheduling
+final cronTrigger = TriggerBuilder(
+  expression: '0 0 * * * *', // Every hour
+  zone: 'UTC',
+);
+
+// Create a fixed rate trigger for regular intervals
+final fixedRateTrigger = TriggerBuilder(
+  fixedRate: Duration(seconds: 30),
+  delayPeriod: Duration(seconds: 5), // Initial delay
+);
+
+// Create a fixed delay trigger for sequential execution
+final fixedDelayTrigger = TriggerBuilder(
+  fixedDelay: Duration(minutes: 1),
+  zone: 'America/New_York',
+);
+
+// Create a simple periodic trigger
+final periodicTrigger = TriggerBuilder(
+  period: Duration(hours: 2),
+);
+
+// Use with task scheduler
+await taskScheduler.schedule(myTask, fixedRateTrigger);
+</code></pre>
+<h2 id="trigger-selection-logic">Trigger Selection Logic</h2>
+<p>The builder selects triggers in this priority order:</p>
+<ol>
+<li><code>expression</code> → CronTrigger</li>
+<li><code>fixedDelay</code> → FixedDelayTrigger</li>
+<li><code>fixedRate</code> → FixedRateTrigger</li>
+<li><code>period</code> → PeriodicTrigger</li>
+</ol>
+<p>Only one trigger type can be specified at a time. Providing multiple
+trigger parameters will result in the first matching type being used.</p>
+<h2 id="timezone-support">Timezone Support</h2>
+<p>All triggers support optional timezone specification. When provided,
+the timezone is used for all scheduling calculations. If not specified,
+the system default timezone is used.</p>
+<h2 id="error-handling">Error Handling</h2>
+<p>The builder provides comprehensive error messages when:</p>
+<ul>
+<li>No trigger parameters are provided</li>
+<li>Invalid cron expressions are detected (handled by CronTrigger)</li>
+<li>Invalid durations are provided (negative or zero)</li>
+<li>Unsupported parameter combinations are used</li>
+</ul>
+<h2 id="best-practices">Best Practices</h2>
+<ul>
+<li>Use the most specific trigger type for your use case</li>
+<li>Specify timezone for business-critical scheduling</li>
+<li>Use appropriate initial delays to stagger task startup</li>
+<li>Consider resource usage when choosing trigger intervals</li>
+<li>Test trigger behavior with your specific task execution times</li>
+</ul>
+<h2 id="integration-with-scheduling-annotations">Integration with Scheduling Annotations</h2>
+<p>This builder can be used to programmatically create triggers that
+mirror the behavior of scheduling annotations:</p>
+<pre class="language-dart"><code class="language-dart">// Equivalent to @Scheduled(cron: '0 0 * * * *', zone: 'UTC')
+final trigger = TriggerBuilder(
+  expression: '0 0 * * * *',
+  zone: 'UTC',
+);
+
+// Equivalent to @Periodic(Duration(minutes: 5))
+final trigger = TriggerBuilder(
+  period: Duration(minutes: 5),
+);
+</code></pre>
+<p>Creates a trigger builder that automatically constructs the appropriate
+trigger type based on the provided parameters.</p>
+<p>@param fixedRate Optional duration for fixed rate scheduling (start to start)
+@param fixedDelay Optional duration for fixed delay scheduling (end to start)<br>
+@param expression Optional cron expression for time-based scheduling
+@param delayPeriod Optional initial delay before first execution
+@param period Optional simple period for recurring execution
+@param zone Optional timezone identifier for scheduling calculations</p>
+<p>@throws SchedulerException if no trigger parameters are provided or
+if invalid parameter combinations are detected</p>
+<p>Example:</p>
+<pre class="language-dart"><code class="language-dart">// Various trigger configurations
+final hourlyTrigger = TriggerBuilder(expression: '0 0 * * * *');
+final rapidTrigger = TriggerBuilder(fixedRate: Duration(seconds: 10));
+final delayedTrigger = TriggerBuilder(
+  fixedDelay: Duration(minutes: 5),
+  delayPeriod: Duration(seconds: 30), // Wait 30s before first execution
+  zone: 'Europe/London',
+);
+</code></pre>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">TriggerBuilder({this.fixedDelay, this.fixedRate, this.expression, this.delayPeriod, this.period, this.zone}) {
+  &#47;&#47; Resolve timezone: use specified zone or system default
+  ZoneId zoneId = zone != null ? ZoneId.of(zone!) : ZoneId.systemDefault();
+
+  &#47;&#47; Determine and create the appropriate trigger type
+  if (expression != null) {
+    _trigger = CronTrigger(expression!, zoneId);
+  } else if (fixedDelay != null) {
+    _trigger = FixedDelayTrigger(fixedDelay!, zoneId, delayPeriod);
+  } else if (fixedRate != null) {
+    _trigger = FixedRateTrigger(fixedRate!, zoneId, delayPeriod);
+  } else if (period != null) {
+    _trigger = PeriodicTrigger(period!, zoneId);
+  } else {
+    throw SchedulerException(
+      &quot;Invalid trigger configuration: no trigger type specified.\n&quot;
+      &quot;You must provide one of the following:\n&quot;
+      &quot;  • expression → for CronTrigger (e.g. &#39;0 0 * * *&#39;)\n&quot;
+      &quot;  • fixedDelay → for FixedDelayTrigger (Duration between executions)\n&quot;
+      &quot;  • fixedRate  → for FixedRateTrigger (Duration between start times)\n&quot;
+      &quot;  • period     → for PeriodicTrigger (Simple repeating interval)\n&quot;
+      &quot;Example:\n&quot;
+      &quot;  TriggerBuilder(fixedRate: Duration(seconds: 10));&quot;
+    );
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/TriggerBuilder-class.html">TriggerBuilder</a></li>
+    <li class="self-crumb">TriggerBuilder.new constructor</li>
+</ol>
+
+    <h5>TriggerBuilder class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the schedulingAnnotationProcessor method from the SchedulingConfiguration class, for the Dart programming language.">
+  <title>schedulingAnnotationProcessor method - SchedulingConfiguration class - jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling.dart</a></li>
+    <li><a href="../../jetleaf_scheduling/SchedulingConfiguration-class.html">SchedulingConfiguration</a></li>
+    <li class="self-crumb">schedulingAnnotationProcessor method</li>
+  </ol>
+  <div class="self-name">schedulingAnnotationProcessor</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_scheduling&#47;SchedulingConfiguration-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">schedulingAnnotationProcessor</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://pub.dev/documentation/jetleaf_core/1.0.1/annotation/Role-class.html">Role</a>(DesignRole.INFRASTRUCTURE)</li>
+        <li>@<a href="https://pub.dev/documentation/jetleaf_core/1.0.1/annotation/Pod-class.html">Pod</a>(value: SchedulingAnnotationPodProcessor.SCHEDULING_ANNOTATION_AWARE_PROCESSOR_POD_NAME)</li>
+    </ol>
+  </div>
+<span class="returntype"><a href="../../jetleaf_scheduling/SchedulingAnnotationPodProcessor-class.html">SchedulingAnnotationPodProcessor</a></span>
+<span class="name ">schedulingAnnotationProcessor</span>(<wbr>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Creates the main scheduling annotation processor that detects and registers
+methods annotated with <code>@Scheduled</code> and <code>@Cron</code>.</p>
+<p>This pod is responsible for:</p>
+<ul>
+<li>Scanning all pods for scheduling annotations during initialization</li>
+<li>Validating scheduling configuration (ensuring only one trigger type per method)</li>
+<li>Creating appropriate triggers based on annotation properties</li>
+<li>Registering scheduled methods with the task scheduler</li>
+<li>Providing detailed logging for scheduling activities</li>
+</ul>
+<p>@param taskScheduler The task scheduler that will execute the scheduled methods.
+This parameter is automatically wired by the container.
+@return A configured <a href="../../jetleaf_scheduling/SchedulingAnnotationPodProcessor-class.html">SchedulingAnnotationPodProcessor</a> instance</p>
+<p>Example of automatic dependency injection:</p>
+<pre class="language-dart"><code class="language-dart">// The taskScheduler parameter is automatically provided by the container
+final processor = schedulingAnnotationProcessor(taskScheduler);
+</code></pre>
+<p>The processor uses the provided task scheduler to actually schedule method
+executions. If no custom task scheduler is defined, a default one will be
+auto-configured by the framework.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">@Role(DesignRole.INFRASTRUCTURE)
+@Pod(value: SchedulingAnnotationPodProcessor.SCHEDULING_ANNOTATION_AWARE_PROCESSOR_POD_NAME)
+SchedulingAnnotationPodProcessor schedulingAnnotationProcessor() =&gt; SchedulingAnnotationPodProcessor();</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+    <li><a href="../../jetleaf_scheduling/SchedulingConfiguration-class.html">SchedulingConfiguration</a></li>
+    <li class="self-crumb">schedulingAnnotationProcessor method</li>
+</ol>
+
+    <h5>SchedulingConfiguration class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

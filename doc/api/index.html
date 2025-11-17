@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="jetleaf_scheduling API docs, for the Dart programming language.">
+  <title>jetleaf_scheduling - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://jetleaf.hapnium.com">jetleaf_scheduling package</a></li>
+  </ol>
+  <div class="self-name">jetleaf_scheduling</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="-jetleaf-scheduling--task-scheduling--timed-execution">⏱️ JetLeaf Scheduling — Task Scheduling &amp; Timed Execution</h1>
+<p><a href="https://pub.dev/packages/jetleaf_scheduling"><img src="https://img.shields.io/badge/version-1.0.0-blue" alt="pub package"></a>
+<a href="#license"><img src="https://img.shields.io/badge/license-JetLeaf-green" alt="License"></a>
+<a href="https://dart.dev"><img src="https://img.shields.io/badge/sdk-%3E%3D3.9.0-blue" alt="Dart SDK"></a></p>
+<p>Task scheduling framework for background jobs, periodic tasks, and delayed execution in JetLeaf applications.</p>
+<h2 id="-overview">📋 Overview</h2>
+<p><code>jetleaf_scheduling</code> provides comprehensive scheduling capabilities:</p>
+<ul>
+<li><strong>Periodic Tasks</strong> — Run tasks at fixed intervals</li>
+<li><strong>Delayed Execution</strong> — Schedule tasks for later execution</li>
+<li><strong>Cron Expressions</strong> — Complex scheduling with cron syntax</li>
+<li><strong>Task Pools</strong> — Manage concurrent task execution</li>
+<li><strong>Error Handling</strong> — Robust failure management</li>
+<li><strong>Pod Integration</strong> — Declarative scheduled pods</li>
+<li><strong>Async Support</strong> — Full async/await support</li>
+</ul>
+<h2 id="-quick-start">🚀 Quick Start</h2>
+<h3 id="installation">Installation</h3>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  jetleaf_scheduling:
+    path: ./jetleaf_scheduling
+</code></pre>
+<h3 id="basic-scheduled-tasks">Basic Scheduled Tasks</h3>
+<pre class="language-dart"><code class="language-dart">import 'package:jetleaf_scheduling/scheduling.dart';
+
+@Service()
+class ReportService {
+  @Scheduled(fixedDelay: 60000)  // Run every 60 seconds
+  void generateDailyReport() {
+    print('Generating daily report...');
+  }
+
+  @Scheduled(fixedRate: 300000)  // Run every 5 minutes
+  Future&lt;void&gt; syncData() async {
+    print('Syncing data...');
+    await performSync();
+  }
+}
+
+void main() async {
+  final context = AnnotationConfigApplicationContext(['package:myapp']);
+  // Scheduled tasks run automatically
+}
+</code></pre>
+<h2 id="-key-features">📚 Key Features</h2>
+<h3 id="1-fixed-delay-scheduling">1. Fixed Delay Scheduling</h3>
+<p><strong>Run after delay between executions</strong>:</p>
+<pre class="language-dart"><code class="language-dart">@Service()
+class TaskService {
+  @Scheduled(fixedDelay: 5000)  // 5 second delay after completion
+  void periodicTask() {
+    print('Task executed at ${DateTime.now()}');
+  }
+
+  @Scheduled(fixedDelay: 10000, initialDelay: 2000)
+  void delayedPeriodicTask() {
+    // Wait 2 seconds before first execution, then 10s between executions
+    print('Delayed task running...');
+  }
+}
+</code></pre>
+<h3 id="2-fixed-rate-scheduling">2. Fixed Rate Scheduling</h3>
+<p><strong>Run at fixed intervals regardless of execution time</strong>:</p>
+<pre class="language-dart"><code class="language-dart">@Service()
+class MetricsService {
+  @Scheduled(fixedRate: 60000)  // Every 60 seconds
+  Future&lt;void&gt; collectMetrics() async {
+    print('Collecting metrics...');
+    await _collectSystemMetrics();
+    await _collectApplicationMetrics();
+  }
+}
+</code></pre>
+<h3 id="3-cron-scheduling">3. Cron Scheduling</h3>
+<p><strong>Complex scheduling with cron expressions</strong>:</p>
+<pre class="language-dart"><code class="language-dart">@Service()
+class ScheduledJobs {
+  // Every day at 2:00 AM
+  @Scheduled(cron: '0 2 * * *')
+  Future&lt;void&gt; dailyMaintenance() {
+    print('Running daily maintenance...');
+  }
+
+  // Every Monday at 8:00 AM
+  @Scheduled(cron: '0 8 * * MON')
+  Future&lt;void&gt; weeklyReport() {
+    print('Generating weekly report...');
+  }
+
+  // Every 15 minutes
+  @Scheduled(cron: '*/15 * * * *')
+  void frequentCheck() {
+    print('Frequent check running...');
+  }
+
+  // First day of month at midnight
+  @Scheduled(cron: '0 0 1 * *')
+  Future&lt;void&gt; monthlyCleanup() {
+    print('Monthly cleanup started...');
+  }
+}
+</code></pre>
+<h3 id="4-async-scheduled-tasks">4. Async Scheduled Tasks</h3>
+<p><strong>Support for async operations</strong>:</p>
+<pre class="language-dart"><code class="language-dart">@Service()
+class DataService {
+  final DatabaseConnection _db;
+  final ApiClient _api;
+
+  @Autowired
+  DataService(this._db, this._api);
+
+  @Scheduled(fixedRate: 300000)
+  Future&lt;void&gt; syncExternalData() async {
+    try {
+      // Fetch from external API
+      final data = await _api.fetchData();
+      
+      // Store in database
+      await _db.transaction((tx) async {
+        for (final item in data) {
+          await tx.insert('items', item);
+        }
+      });
+      
+      print('Data sync completed');
+    } catch (e) {
+      print('Data sync failed: $e');
+    }
+  }
+}
+</code></pre>
+<h3 id="5-manual-task-scheduling">5. Manual Task Scheduling</h3>
+<p><strong>Schedule tasks programmatically</strong>:</p>
+<pre class="language-dart"><code class="language-dart">@Service()
+class TaskScheduler {
+  final ScheduledTaskRegistry _registry;
+
+  @Autowired
+  TaskScheduler(this._registry);
+
+  void scheduleCustomTask() {
+    // Schedule task to run after 5 seconds
+    _registry.scheduleOnce(
+      Duration(seconds: 5),
+      () =&gt; print('One-time task executed'),
+    );
+
+    // Schedule recurring task
+    _registry.scheduleAtFixedRate(
+      Duration(seconds: 30),
+      () =&gt; print('Recurring task'),
+    );
+
+    // Schedule with cron
+    _registry.scheduleWithCron(
+      '0 * * * *',  // Every hour
+      () =&gt; print('Hourly task'),
+    );
+  }
+}
+</code></pre>
+<h3 id="6-task-error-handling">6. Task Error Handling</h3>
+<p><strong>Handle task failures gracefully</strong>:</p>
+<pre class="language-dart"><code class="language-dart">@Service()
+class RobustTaskService {
+  @Scheduled(fixedRate: 60000)
+  Future&lt;void&gt; safetask() async {
+    try {
+      await performRiskyOperation();
+    } catch (e) {
+      // Log error but don't crash scheduler
+      print('Task failed: $e');
+      // Optionally notify monitoring systems
+      await notifyError(e);
+    }
+  }
+
+  Future&lt;void&gt; performRiskyOperation() async {
+    // Operation that might fail
+  }
+
+  Future&lt;void&gt; notifyError(Object error) async {
+    // Send alert to monitoring system
+  }
+}
+</code></pre>
+<h2 id="-cron-expression-format">📖 Cron Expression Format</h2>
+<pre class="language-dart"><code>┌───────────── second (0-59)
+│ ┌───────────── minute (0-59)
+│ │ ┌───────────── hour (0-23)
+│ │ │ ┌───────────── day of month (1-31)
+│ │ │ │ ┌───────────── month (1-12 or JAN-DEC)
+│ │ │ │ │ ┌───────────── day of week (0-6 or SUN-SAT)
+│ │ │ │ │ │
+* * * * * *
+</code></pre>
+<p><strong>Common cron patterns</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0 0 * * *</code></td>
+<td>Every day at midnight</td>
+</tr>
+<tr>
+<td><code>0 12 * * *</code></td>
+<td>Every day at noon</td>
+</tr>
+<tr>
+<td><code>0 0 * * MON</code></td>
+<td>Every Monday at midnight</td>
+</tr>
+<tr>
+<td><code>0 0 1 * *</code></td>
+<td>First day of every month</td>
+</tr>
+<tr>
+<td><code>*/15 * * * *</code></td>
+<td>Every 15 minutes</td>
+</tr>
+<tr>
+<td><code>0 */6 * * *</code></td>
+<td>Every 6 hours</td>
+</tr>
+<tr>
+<td><code>30 2 * * *</code></td>
+<td>Daily at 2:30 AM</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-common-patterns">🎯 Common Patterns</h2>
+<h3 id="pattern-1-periodic-data-synchronization">Pattern 1: Periodic Data Synchronization</h3>
+<pre class="language-dart"><code class="language-dart">@Service()
+class SyncService {
+  final ExternalApiClient _api;
+  final Repository _repo;
+
+  @Scheduled(fixedRate: 300000)  // Every 5 minutes
+  Future&lt;void&gt; syncData() async {
+    try {
+      final remoteData = await _api.getData();
+      await _repo.updateAll(remoteData);
+      print('✓ Data synced successfully');
+    } catch (e) {
+      print('✗ Sync failed: $e');
+    }
+  }
+}
+</code></pre>
+<h3 id="pattern-2-scheduled-reports">Pattern 2: Scheduled Reports</h3>
+<pre class="language-dart"><code class="language-dart">@Service()
+class ReportingService {
+  final ReportGenerator _generator;
+  final EmailService _email;
+
+  @Scheduled(cron: '0 6 * * *')  // 6 AM daily
+  Future&lt;void&gt; sendDailyReport() async {
+    final report = await _generator.generateDailyReport();
+    await _email.send(
+      to: 'admin@example.com',
+      subject: 'Daily Report',
+      body: report,
+    );
+  }
+
+  @Scheduled(cron: '0 9 * * MON')  // 9 AM every Monday
+  Future&lt;void&gt; sendWeeklyReport() async {
+    final report = await _generator.generateWeeklyReport();
+    await _email.send(
+      to: 'team@example.com',
+      subject: 'Weekly Report',
+      body: report,
+    );
+  }
+}
+</code></pre>
+<h3 id="pattern-3-cleanup--maintenance">Pattern 3: Cleanup &amp; Maintenance</h3>
+<pre class="language-dart"><code class="language-dart">@Service()
+class MaintenanceService {
+  final Database _db;
+  final CacheService _cache;
+
+  @Scheduled(cron: '0 3 * * *')  // 3 AM daily
+  Future&lt;void&gt; cleanupOldData() async {
+    // Delete records older than 30 days
+    await _db.delete(
+      'logs',
+      where: 'createdAt &lt; DATE_SUB(NOW(), INTERVAL 30 DAY)',
+    );
+    print('✓ Old data cleaned up');
+  }
+
+  @Scheduled(fixedRate: 3600000)  // Every hour
+  Future&lt;void&gt; rebuildCache() async {
+    await _cache.clear();
+    await _cache.preload();
+    print('✓ Cache rebuilt');
+  }
+}
+</code></pre>
+<h3 id="pattern-4-health-checks">Pattern 4: Health Checks</h3>
+<pre class="language-dart"><code class="language-dart">@Service()
+class HealthCheckService {
+  @Scheduled(fixedRate: 60000)  // Every minute
+  Future&lt;void&gt; checkServiceHealth() async {
+    final health = HealthStatus.healthy;
+
+    // Check database
+    try {
+      await _db.ping();
+    } catch (e) {
+      health = HealthStatus.degraded;
+      print('⚠️ Database unreachable');
+    }
+
+    // Check external service
+    try {
+      await _externalApi.ping();
+    } catch (e) {
+      health = HealthStatus.degraded;
+      print('⚠️ External service unreachable');
+    }
+
+    if (health != HealthStatus.healthy) {
+      await notifyOps(health);
+    }
+  }
+}
+</code></pre>
+<h2 id="-common-issues">⚠️ Common Issues</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task not executing</td>
+<td>Scheduling not enabled</td>
+<td>Ensure <code>@EnableScheduling</code> or framework initializes scheduler</td>
+</tr>
+<tr>
+<td>Cron not working</td>
+<td>Invalid expression</td>
+<td>Verify cron format</td>
+</tr>
+<tr>
+<td>Task runs forever</td>
+<td>No completion logic</td>
+<td>Add timeout or break condition</td>
+</tr>
+<tr>
+<td>Resource leak</td>
+<td>Tasks not cleaned up</td>
+<td>Properly close scheduler on shutdown</td>
+</tr>
+</tbody>
+</table>
+<h2 id="-best-practices">📋 Best Practices</h2>
+<h3 id="-do">✅ DO</h3>
+<ul>
+<li>Keep scheduled tasks lightweight</li>
+<li>Handle exceptions in tasks</li>
+<li>Use appropriate scheduling intervals</li>
+<li>Log task execution</li>
+<li>Monitor long-running tasks</li>
+<li>Clean up resources properly</li>
+<li>Test task logic independently</li>
+</ul>
+<h3 id="-dont">❌ DON'T</h3>
+<ul>
+<li>Block the scheduler with long operations</li>
+<li>Schedule too many frequent tasks</li>
+<li>Ignore task failures</li>
+<li>Share mutable state between tasks</li>
+<li>Schedule CPU-intensive work frequently</li>
+<li>Forget error handling</li>
+<li>Create resource leaks in tasks</li>
+</ul>
+<h2 id="-dependencies">📦 Dependencies</h2>
+<ul>
+<li><strong><code>jetleaf_lang</code></strong> — Language utilities</li>
+<li><strong><code>jetleaf_logging</code></strong> — Structured logging</li>
+<li><strong><code>jetleaf_pod</code></strong> — Pod lifecycle</li>
+<li><strong><code>jetleaf_core</code></strong> — Core framework</li>
+</ul>
+<h2 id="-license">📄 License</h2>
+<p>This package is part of the JetLeaf Framework. See LICENSE in the root directory.</p>
+<h2 id="-related-packages">🔗 Related Packages</h2>
+<ul>
+<li><strong><code>jetleaf_core</code></strong> — Framework integration</li>
+<li><strong><code>jetleaf_logging</code></strong> — Task logging</li>
+</ul>
+<h2 id="-support">📞 Support</h2>
+<p>For issues, questions, or contributions, visit:</p>
+<ul>
+<li><a href="https://github.com/jetleaf/jetleaf_scheduling/issues">GitHub Issues</a></li>
+<li><a href="https://jetleaf.hapnium.com/docs/scheduling">Documentation</a></li>
+<li><a href="https://forum.jetleaf.hapnium.com">Community Forum</a></li>
+</ul>
+<hr>
+<p><strong>Created with ❤️ by <a href="https://hapnium.com">Hapnium</a></strong></p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="jetleaf_scheduling">
+  <span class="name"><a href="jetleaf_scheduling/">jetleaf_scheduling</a></span> 
+
+</dt>
+<dd>JetLeaf Scheduling Library - Comprehensive task scheduling and execution framework.
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://jetleaf.hapnium.com">jetleaf_scheduling package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">jetleaf_scheduling</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="jetleaf_scheduling/">jetleaf_scheduling</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

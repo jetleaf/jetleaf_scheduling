@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the SchedulingConfiguration class from the jetleaf_scheduling library, for the Dart programming language.">
+  <title>SchedulingConfiguration class - jetleaf_scheduling library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../jetleaf_scheduling/">jetleaf_scheduling.dart</a></li>
+    <li class="self-crumb">SchedulingConfiguration class</li>
+  </ol>
+  <div class="self-name">SchedulingConfiguration</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="jetleaf_scheduling&#47;jetleaf_scheduling-library-sidebar.html"
+    data-below-sidebar="jetleaf_scheduling&#47;SchedulingConfiguration-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">SchedulingConfiguration</span> class 
+    <a href="https://dart.dev/language/class-modifiers#final" class="feature feature-final" title="This class can neither be extended, implemented, nor mixed in.">final</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Configuration class that sets up the infrastructure for JetLeaf task scheduling.</p>
+<p>This configuration class is automatically imported when <code>@EnableScheduling</code> is used
+and provides the necessary pods to support scheduled method execution based on
+<code>@Scheduled</code> and <code>@Cron</code> annotations.</p>
+<h2 id="responsibilities">Responsibilities</h2>
+<ul>
+<li>Registers the <code>SchedulingAnnotationAwareProcesor</code> as a pod lifecycle processor</li>
+<li>Integrates scheduling infrastructure with the pod container lifecycle</li>
+<li>Ensures scheduled methods are detected and registered with the task scheduler</li>
+<li>Provides proper role metadata for infrastructure components</li>
+</ul>
+<h2 id="pod-definitions">Pod Definitions</h2>
+<p>This configuration provides the following pods:</p>
+<ul>
+<li><code>schedulingAnnotationProcessor</code>: The main processor that scans for and
+registers scheduled methods with the task scheduler</li>
+</ul>
+<h2 id="integration-with-application-lifecycle">Integration with Application Lifecycle</h2>
+<p>The scheduling processor integrates with the pod container lifecycle to ensure
+scheduled methods are registered at the appropriate time - after all dependencies
+are resolved but before the application becomes fully operational.</p>
+<p>Example:</p>
+<pre class="language-dart"><code class="language-dart">@EnableScheduling
+@Configuration
+class AppConfig {
+  // This will automatically import SchedulingConfiguration
+  // and set up scheduling infrastructure
+  
+  @Pod
+  TaskScheduler taskScheduler() {
+    return ThreadPoolTaskScheduler()
+      ..setPoolSize(5)
+      ..setThreadNamePrefix('scheduled-');
+  }
+}
+
+@Service
+class ScheduledService {
+  @Scheduled(fixedRate: 5000)
+  void runEvery5Seconds() {
+    print('Executing every 5 seconds');
+  }
+}
+</code></pre>
+<h2 id="customization-options">Customization Options</h2>
+<p>While this configuration provides sensible defaults, you can customize
+scheduling behavior by:</p>
+<ol>
+<li><strong>Providing a custom TaskScheduler</strong>:</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">@Pod
+TaskScheduler customTaskScheduler() {
+  return CustomTaskScheduler();
+}
+</code></pre>
+<ol start="2">
+<li><strong>Extending the configuration</strong>:</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">@Configuration
+class CustomSchedulingConfig extends SchedulingConfiguration {
+  @Override
+  @Pod
+  SchedulingAnnotationAwareProcesor schedulingAnnotationProcessor(
+      TaskScheduler taskScheduler) {
+    return CustomSchedulingProcessor(taskScheduler);
+  }
+}
+</code></pre>
+<ol start="3">
+<li><strong>Adding additional scheduling-related pods</strong>:</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">@Configuration
+@Import(SchedulingConfiguration)
+class ExtendedSchedulingConfig {
+  @Pod
+  ScheduledTaskRegistrar taskRegistrar() {
+    return ScheduledTaskRegistrar();
+  }
+}
+</code></pre>
+<h2 id="infrastructure-role">Infrastructure Role</h2>
+<p>This configuration and its pods are marked with <code>DesignRole.INFRASTRUCTURE</code>
+to indicate they are framework-level components rather than business logic.
+This helps with:</p>
+<ul>
+<li>Clear separation of concerns in application architecture</li>
+<li>Better understanding of component purposes during debugging</li>
+<li>More targeted testing strategies (infrastructure vs business logic tests)</li>
+<li>Improved dependency management and visibility control</li>
+</ul>
+<h2 id="testing-strategy">Testing Strategy</h2>
+<p>When testing applications that use scheduling, you can:</p>
+<ol>
+<li><strong>Disable scheduling in tests</strong>:</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">@TestConfiguration
+class TestConfig {
+  // Don't use @EnableScheduling in tests
+}
+</code></pre>
+<ol start="2">
+<li><strong>Mock the scheduling processor</strong>:</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">@Test
+void testWithoutScheduling() {
+  final mockProcessor = MockSchedulingAnnotationPodProcessor();
+  when(mockProcessor.processAfterInitialization(any, any, any))
+      .thenAnswer((invocation) async =&gt; invocation.positionalArguments[0]);
+      
+  // Test your business logic without scheduling interference
+}
+</code></pre>
+<ol start="3">
+<li><strong>Use a test-specific scheduler</strong>:</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">@TestConfiguration
+class TestSchedulingConfig {
+  @Pod
+  TaskScheduler testTaskScheduler() {
+    return SyncTaskScheduler(); // Executes tasks synchronously for tests
+  }
+}
+</code></pre>
+<h2 id="error-handling-and-resilience">Error Handling and Resilience</h2>
+<p>The scheduling infrastructure includes built-in error handling:</p>
+<ul>
+<li>Scheduled method exceptions are caught and logged without stopping the scheduler</li>
+<li>Configuration errors during annotation processing throw meaningful exceptions</li>
+<li>The processor continues processing other methods if one method fails</li>
+<li>Proper lifecycle management ensures resources are cleaned up on shutdown</li>
+</ul>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<ul>
+<li>Annotation scanning occurs during application startup, not at runtime</li>
+<li>Each scheduled method creates one scheduled task in the task scheduler</li>
+<li>The processor uses efficient reflection to detect annotations</li>
+<li>Consider using <code>@Lazy</code> for expensive-to-initialize scheduled pods</li>
+<li>Monitor thread pool usage if you have many concurrent scheduled tasks</li>
+</ul>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+        
+
+
+        
+        
+  <dt>Annotations</dt>
+  <dd>
+    <ul class="annotation-list clazz-relationships">
+        <li>@<a href="https://pub.dev/documentation/jetleaf_core/1.0.1/annotation/Configuration-class.html">Configuration</a>(SchedulingConfiguration.SCHEDULING_CONFIGURATION_POD_NAME)</li>
+        <li>@<a href="https://pub.dev/documentation/jetleaf_core/1.0.1/annotation/Role-class.html">Role</a>(DesignRole.INFRASTRUCTURE)</li>
+    </ul>
+  </dd>
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="SchedulingConfiguration.new" class="callable">
+          <span class="name"><a href="../jetleaf_scheduling/SchedulingConfiguration/SchedulingConfiguration.html">SchedulingConfiguration.new</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          Configuration class that sets up the infrastructure for JetLeaf task scheduling.
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="schedulingAnnotationProcessor" class="callable">
+  <span class="name"><a href="../jetleaf_scheduling/SchedulingConfiguration/schedulingAnnotationProcessor.html">schedulingAnnotationProcessor</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="../jetleaf_scheduling/SchedulingAnnotationPodProcessor-class.html">SchedulingAnnotationPodProcessor</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Creates the main scheduling annotation processor that detects and registers
+methods annotated with <code>@Scheduled</code> and <code>@Cron</code>.
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.9.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.9.2/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  <section class="summary offset-anchor" id="constants">
+    <h2>Constants</h2>
+    <dl class="properties">
+        <dt id="SCHEDULING_CONFIGURATION_POD_NAME" class="constant">
+    <span class="name "><a href="../jetleaf_scheduling/SchedulingConfiguration/SCHEDULING_CONFIGURATION_POD_NAME-constant.html">SCHEDULING_CONFIGURATION_POD_NAME</a></span>
+  <span class="signature">&#8594; const <a href="https://api.dart.dev/stable/3.9.2/dart-core/String-class.html">String</a></span>
+  
+
+</dt>
+<dd>
+  Pod name for the <strong>SchedulingConfiguration</strong>.
+  
+
+</dd>
+
+    </dl>
+  </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">jetleaf_scheduling</a></li>
+    <li><a href="../jetleaf_scheduling/">jetleaf_scheduling</a></li>
+    <li class="self-crumb">SchedulingConfiguration class</li>
+</ol>
+
+    <h5>jetleaf_scheduling library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    jetleaf_scheduling
+      1.0.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
