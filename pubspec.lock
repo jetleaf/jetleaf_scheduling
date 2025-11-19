@@ -157,10 +157,10 @@ packages:
     dependency: "direct main"
     description:
       name: jetleaf_core
-      sha256: "5324f6a11c2cf2a946d4f5b0fb6e894064800a6ff8840dc86406c8b35e25297b"
+      sha256: "8a8c465dc49370453d55dea4aa67738f9d6a3932929914fe9fe17cc1311caa61"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.1+1"
   jetleaf_env:
     dependency: transitive
     description:
@@ -189,10 +189,10 @@ packages:
     dependency: "direct main"
     description:
       name: jetleaf_pod
-      sha256: "8e5e10d4b562240447a17a9175583cea987b50c2f51f5ce26ffee0d7126e51fe"
+      sha256: d0a79b7715dc50ce5d4cc4dbe889d58f6ccd0ab6f756d77a312a745f2843548a
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.1+1"
   jetleaf_utils:
     dependency: transitive
     description:

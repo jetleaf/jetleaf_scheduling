@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.1+1] - 2025-11-19
+## [1.0.0+1] - 2025-11-19
 
 Patch release: dependency alignment and small improvements.
 
