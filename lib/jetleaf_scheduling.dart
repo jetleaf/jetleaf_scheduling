@@ -12,69 +12,66 @@
 // 
 // 🔧 Powered by Hapnium — the Dart backend engine 🍃
 
-/// {@template jetleaf_scheduling_library}
-/// JetLeaf Scheduling Library - Comprehensive task scheduling and execution framework.
+/// ⏰ **JetLeaf Scheduling Library**
 ///
-/// This library provides a robust scheduling infrastructure for JetLeaf applications,
-/// enabling time-based task execution, cron expressions, periodic triggers, and
-/// concurrent task management. It integrates seamlessly with JetLeaf's core
-/// dependency injection and aspect-oriented programming capabilities.
+/// This library provides a comprehensive scheduling framework for JetLeaf
+/// applications, enabling declarative and programmatic task execution
+/// based on various triggers, including cron, fixed rate, fixed delay, and
+/// periodic schedules.
 ///
-/// The scheduling library supports various scheduling patterns:
-/// - **Fixed Rate**: Execute at fixed intervals regardless of previous execution completion
-/// - **Fixed Delay**: Execute with fixed delay between completion and next start
-/// - **Cron Expressions**: Complex scheduling using Unix-style cron patterns
-/// - **Periodic**: Simple recurring execution with configurable initial delay
+/// It includes task management, execution context handling, scheduling
+/// annotations, and infrastructure for building reliable scheduled operations.
 ///
-/// ## Example: Scheduled Task Configuration
 ///
+/// ## 🔑 Key Concepts
+///
+/// ### ⚙ Core Scheduling Infrastructure
+/// - `SchedulingConfiguration` — central configuration for scheduling system  
+/// - `SchedulingConfigurer` — programmatic configuration of tasks and triggers  
+/// - `RunnableScheduledMethod` — represents a scheduled method execution  
+/// - `SchedulingAnnotationPodProcessor` — processes annotation-based scheduling
+///
+///
+/// ### 🏗 Task Execution & Management
+/// - `TaskScheduler` — primary interface for scheduling tasks  
+/// - `ConcurrentTaskScheduler` — supports concurrent task execution  
+/// - `ScheduledTask` / `SimpleScheduledTask` — encapsulates scheduled work  
+/// - `ScheduledTaskHolder` — stores and manages scheduled tasks  
+/// - `TaskExecutionContext` / `DefaultTaskExecutionContext` — runtime context for task execution  
+/// - `SchedulingTaskNameGenerator` / `DefaultSchedulingTaskNameGenerator` — generates unique task names
+///
+///
+/// ### ⏱ Triggers
+/// - `Trigger` — base interface for scheduling triggers  
+/// - `CronTrigger` — schedule tasks using cron expressions  
+/// - `FixedRateTrigger` — run tasks at a fixed rate  
+/// - `FixedDelayTrigger` — run tasks with a fixed delay after completion  
+/// - `PeriodicTrigger` — run tasks at a periodic interval  
+/// - `TriggerBuilder` — fluent builder for custom triggers
+///
+///
+/// ### 📝 Annotations & Exceptions
+/// - `annotations.dart` — declarative scheduling annotations for methods  
+/// - `exceptions.dart` — framework exceptions related to scheduling
+///
+///
+/// ## 🎯 Intended Usage
+///
+/// Import this library to enable task scheduling in JetLeaf applications:
 /// ```dart
-/// @Pod
-/// class ScheduledTasks {
-///   @Scheduled(fixedRate: 5000) // Every 5 seconds
-///   void performHealthCheck() {
-///     // Health check logic
-///     _healthService.checkSystemHealth();
-///   }
+/// import 'package:jetleaf_scheduling/jetleaf_scheduling.dart';
 ///
-///   @Scheduled(cron: '0 0 2 * * *') // Daily at 2 AM
-///   void generateDailyReport() {
-///     // Report generation logic
-///     _reportService.generateDailyReport();
-///   }
-///
-///   @Scheduled(fixedDelay: 10000, initialDelay: 5000) // 10s delay after 5s initial
-///   void processQueue() {
-///     // Queue processing logic
-///     _queueService.processPendingItems();
-///   }
+/// @Scheduled(cron: '0 0 * * *')
+/// void dailyCleanup() {
+///   // task code
 /// }
 /// ```
 ///
-/// ## Example: Custom Task Scheduler
+/// Supports both annotation-driven scheduling and programmatic task registration,
+/// with extensible triggers and execution contexts.
 ///
-/// ```dart
-/// @Pod
-/// class CustomSchedulingConfigurer implements SchedulingConfigurer {
-///   @override
-///   void configureTasks(ScheduledTaskRegistrar registrar) {
-///     registrar.addFixedRateTask(
-///       ScheduledTask(
-///         name: 'CustomTask',
-///         runnable: _customTask,
-///         initialDelay: Duration(seconds: 10),
-///         interval: Duration(minutes: 5)
-///       )
-///     );
-///   }
 ///
-///   Future<void> _customTask() async {
-///     // Custom task implementation
-///     await _customService.executeBusinessLogic();
-///   }
-/// }
-/// ```
-/// {@endtemplate}
+/// © 2025 Hapnium & JetLeaf Contributors
 library;
 
 // Core scheduling infrastructure and configuration

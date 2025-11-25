@@ -24,8 +24,7 @@ Task scheduling framework for background jobs, periodic tasks, and delayed execu
 
 ```yaml
 dependencies:
-  jetleaf_scheduling:
-    path: ./jetleaf_scheduling
+  jetleaf_scheduling: ^1.0.0
 ```
 
 ### Basic Scheduled Tasks
