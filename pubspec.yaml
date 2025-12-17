@@ -1,6 +1,6 @@
 name: jetleaf_scheduling
 description: Task scheduling and timed execution module for the JetLeaf framework.
-version: 1.0.8
+version: 1.0.9
 
 homepage: https://jetleaf.hapnium.com
 repository: https://github.com/jetleaf/jetleaf_scheduling
@@ -26,9 +26,9 @@ environment:
 
 dependencies:
   meta: ^1.17.0
-  jetleaf_lang: ^1.0.8
-  jetleaf_logging: ^1.0.8
-  jetleaf_pod: ^1.0.8
+  jetleaf_lang: ^1.0.9
+  jetleaf_logging: ^1.0.9
+  jetleaf_pod: ^1.0.9
   jetleaf_core: ^1.0.9
 
 dev_dependencies:
